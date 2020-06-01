@@ -1,0 +1,110 @@
+搞懂this的指向问题
+1.函数与编译过程中this指向window                      预编译
+function test(c){                                  AO{arguments[1]; this:window; c:1; a:undefined; b: function(){}}
+  var a = 123;
+  function b(){}
+}
+test(1);相当于window.test(1)
+如果new test(); 在函数体的最顶部隐式的定义一个var this = Object.create(test.prototype)然后将AO中的this给覆盖掉
+
+2.全剧作用域里的this指向window
+
+3.call/apply可以改变函数运行时的this指向
+call和apply的作用其实就是借用别人的函数来实现自己的功能
+function Person(name,age){
+  this.name = name;
+  this.age = age;
+}
+function Student(name,age,grade){
+  //var this ={}
+  Person.call(this,name,age);//借用Person方法实现自己的目的
+  this.grade = grade;
+}
+var student = new Student("wang",12,100);
+
+bind方法
+bind方法会创建一个新的函数称为绑定函数，当调用这个绑定函数时绑定的函数会议创建他时传入bind方法的第一个参数作为this传入bind方法，第二个参数以后的参数作为实参传入
+  this.num = 9; 
+  var mymodule = {
+  num: 81,
+  getNum: function() { return this.num; }
+  };
+
+  console.log(mymodule.getNum()); // 81
+
+  var getNum = mymodule.getNum;
+  console.log(getNum()); // 9, 因为在这个例子中，"this"指向全局对象
+
+  // 创建一个'this'绑定到module的函数
+  var boundGetNum = getNum.bind(mymodule);
+  console.log(boundGetNum()); // 81
+ 
+ 4.obj.func():function里面的this指向obj
+ 谁调用的function，function里面的this指向的就是谁
+ 没人调用函数单独执行的时候function里面的this指向window里面的值
+ var obj = {
+  a: function(){
+  console.log(this.name);
+  },
+  name:"abc";
+ }
+ obj.a();//abc
+ 
+ 做一道题吧
+ var name = "222";
+ var a = {
+  name = "111";
+  say:function(){
+  console.log(this.name);
+  }
+ }
+ var fun = a.say;//将a的say函数赋值给变量fun
+ fun();//执行fun（）函数因为没人调用fun(),fun在window下执行相当于window.fun()此时this指向window this.name = 222
+ a.say();//a.say()a来调用say方法，此时函数中的this指向a所以打印出111
+ var b = {name: "333"
+  say:function(fun){
+  fun();
+  }
+ }
+ b.say(a.say);//将a.say作为参数传给b.say(fun){}此时b.say里面的this指向b
+ /*相当于
+ var b = {
+  name: "333"
+  say:function(say:function(){console.log(this.name);}){
+  say:function(){console.log(this.name);}//相当于window.say()this指向window打印出222
+  }
+ }
+ 
+ */
+ b.say = a.say;//将a.say赋值给b.say
+ /*
+ 相当于
+ var b = {
+  name: "333"
+  say:function(){
+  console.log(this.name);
+  }
+  }
+ }
+ */
+ b.say();//b.say()执行this指向b所以打印出333
+ 
+ 总结：
+ 1.普通的函数调用函数被谁调用this就是谁
+ 2.构造函数如果不用new操作符而直接调用那this指向的window，用new操作符生成对象实例后this指向新生成的对象
+ 3.匿名函数或不处于任何对象中的函数this指向window
+ 4.如果是call/apply等制定的this是谁就是谁
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
