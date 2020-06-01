@@ -1,1 +1,32 @@
 JS中的new关键字之恍然大明白
+前期知识储备： 对象的创建方法
+1） var obj = {}对象字面量  
+2)  构造函数方法创建对象   var obj = new Object(); 系统自带的构造函数Object
+                        function Person(){}
+                        var person1 = new Person();自定义的方法
+                        
+构造函数的内部原理：1.在函数体最前面隐式的加上this={}空对象
+                 2.执行this.xxx = xxx;
+                 3.最后一步隐式的返回this
+                 
+                 function Student(name, age, sex){
+                      //var this = {}在函数体最前面隐式的加上this={}空对象
+                      this.name = name;//执行this.xxx = xxx;
+                      this.age = age;//执行this.xxx = xxx;
+                      this.sex = sex;//执行this.xxx = xxx;
+                      //return this;最后一步隐式的返回this
+                 }
+                 var student = new Student('liu',12,felmale);
+
+new关键字的作用及原理
+阅读下面代码分析运行test()和new test()的结果分别是什么
+var a = 5;
+function test(){
+  a = 0;
+  alert(a);
+  alert(this.a);
+  var a;
+  alert(a);
+}
+new test();        new的时候在函数体的最顶部隐式的定义一个this的空函数this{} 所以执行的结果是0，undefined，0
+test();            没有new关键字的时候相当于window.test()此时this指向window范围 所以执行的结果是0，5，0
