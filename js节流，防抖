@@ -1,0 +1,45 @@
+1.函数防抖(debounce)
+在一定时间内，在动作被连续频繁出发的情况下，动作只会执行一次，即调用动作过n秒之后，才会执行该动作，若在这n秒之内又调用次动作则重新计算执行时间，所以短时间内的连续动作永远只能触发一次
+html
+<input type="text" />
+js
+function debounce(func,delay){
+  var timeout;//创建一个标记存放定时器的返回值
+  return function(e){
+    clearTimeout(timeout);//用户每次输入的时候把前一个setTimeout给clear掉
+    timeout = setTimeout(function(){
+      func.apply(this,arguments);  
+    },delay);
+  };
+}
+var validate = debounce(function(e){
+  console.log("change",e.target.value,new Date-0);
+},380);
+document.querySelector("input").addEventListenr('input',validate);
+理解
+function debounce(func,delay){
+  var timeout;//创建一个标记存放定时器的返回值
+  return function(e){
+    clearTimeout(timeout);//用户每次输入的时候把前一个setTimeout给clear掉
+    timeout = setTimeout(function(){
+      function(e){
+        console.log("change",e.target.value,new Date-0);
+         }.apply(this,arguments);  //此时的this指向匿名函数里面的this
+    },380);
+  };
+}
+//调用debounce函数传两个参数，第一个参数是匿名函数，第二个参数是380延迟的毫秒数
+var validate = debounce(function(e){
+  console.log("change",e.target.value,new Date-0);
+},380);
+
+
+
+
+
+
+
+
+
+
+
