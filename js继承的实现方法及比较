@@ -72,8 +72,10 @@ class Person{
   } 
 }
 class Student extends Person{
-  constructor(){
-    super('liu',18)
+  constructor(name,age,grade){
+    super(name,age);
+    this.grade = grade;
+    
   }
 }
 
