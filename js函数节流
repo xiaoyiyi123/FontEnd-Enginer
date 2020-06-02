@@ -1,0 +1,25 @@
+函数节流：本质就是 让时间一定在超过规定的时间执行一次
+比如规定的时间2秒触发一次事件，一定是每隔两秒触发一次事件
+为什么不直接用setInterval，因为js有一个机制，当你设置两秒的时候，两秒内第二次点击，
+会重新计算时间刚刚计算没完成的时间就没了，导致计时器的功能不准
+<button id = 'btn'>throttle submit</button>
+
+function sucess(){
+  consolo.log('throttle submit');
+}//button的点击要执行的函数
+const throttle = (fn,delay)=>{
+  let flag = true;
+  return (...arr)=>{
+    if(!flag) return;//如果flag=flase直接return出去
+    setTimeout(()=>{
+      fn.apply(this,args);
+      flag = true;//fn在两秒之后执行完之后将flag重置成ture
+    }   
+  ,delay);
+  }
+  
+};
+const oThrottle = throttle(success,2000);
+let btn = document.getElementById("btn");
+
+btn.addEventLisenter('click',oThrottle);
