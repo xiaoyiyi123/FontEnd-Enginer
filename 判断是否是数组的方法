@@ -1,0 +1,65 @@
+1.typeof操作符
+typeof只能检测基本数据类型，而引用类型则全部是object，因为JavaScript里面，所有的引用类型，都是基于Object扩展而来的。
+console.log(typeof null); // "object"
+console.log(typeof function() {
+  return 1;
+}); // "function"
+  
+console.log(typeof ‘我真棒’); // "string"
+console.log(typeof 1); // "number"
+console.log(typeof a); // "undefined"
+console.log(typeof undefined); // "undefined"
+console.log(typeof []); // "object"
+
+2.instanceof操作符
+检测对象的原型链是否指向构造函数的prototype对象的。
+var arr = [1,2,3,4,5,6];
+console.log(arr.constructor === Array); // true
+
+3.对象的constructor属性
+var arr = [1,2,3,4,5,6];
+console.log(arr.constructor === Array); // true
+
+当在多个frame中来回穿梭的时候，2和3方法就失效了
+由于每个iframe都有一套自己的执行环境，跨frame实例化的对象彼此是不共享原型链的，因此导致上述检测代码失效!
+
+
+4.Object.prototype.toString
+Object.prototype.toString的行为：
+首先，取得对象的一个内部属性[[Class]]，
+然后依据这个属性，返回一个类似于"[object Array]"的字符串作为结果
+利用这 个方法，再配合call，可以取得任何对象的内部属性[[Class]]，
+然后把类型检测转化为字符串比较，以达到我们的目的。
+function isArrayFn (o) {
+   return Object.prototype.toString.call(o) === '[object Array]';
+}
+var arr = [1,2,3,1];
+console.log(isArrayFn(arr)); // true
+
+5.Array.isArray()
+ECMAScript5将Array.isArray()正式引入JavaScript，目的就是准确地检测一个值是否为数组。IE9+、 Firefox 4+、Safari 5+、Opera 10.5+和Chrome都实现了这个方法。但是在IE8之前的版本是不支持的。
+
+封装一个函数
+var arr = [1,2,3,3,45,6];
+var arr2 = [{name : "wang", age : 22 }];
+function isArrayFn(value) {
+  if (typeof Array.isArray === "function") {
+    return Array.isArray(value);
+  }
+  else{
+    return Object.prototype.toString.call(value) === "[object Array]";
+  }
+}
+console.log(isArrayFn(arr));// true
+console.log(isArrayFn(arr2));// true
+
+
+
+
+
+
+
+
+
+
+
