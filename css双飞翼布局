@@ -13,12 +13,12 @@ CSS
 .header{
   width:100%;
   height:30px;
-  background:red;
+  background-corlor:red;
 }
 .footer{
   width:100%;
   height:30px;
-  background:red;
+  background-corlor:red;
 }
 .container{
   overflow:hidden;
@@ -30,20 +30,20 @@ CSS
 .innerMiddle{
   width:100%;
   height:100px;
-  background:green;
+  background-corlor:green;
 }
 .left{
   width:100px;
   float:left;
   margin-left:-100%;
   height:100px;
-  background:yellow;
+  background-corlor:yellow;
 }
 .right{
   width:100px;
   float:left;
   margin-left:-100px;
-  background:yellow;
+  background-corlor:yellow;
 }
 .container::after{
   content:"";
