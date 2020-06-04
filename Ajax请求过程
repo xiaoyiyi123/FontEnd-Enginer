@@ -1,0 +1,92 @@
+1.什么事ajax：是一种一步的请求数据的技术，对于改善用户的体验和程序的性能很有帮助
+2.ajax的使用
+(1)创建‘XMLHttpRequest’对象，也就是创建一个异步调用对象
+(2)创建一个新的‘HTTP’请求，并制定该http请求的方法，‘URL’及验证信息
+(3)设置相应的‘HTTP’请求状态变化的函数
+(4)发送‘HTTP’请求
+(5)获取异步调用返回的数据
+(6)使用js和dom实现局部更新
+
+原生js的ajax实现方式
+//(1)创建‘XMLHttpRequest’对象，也就是创建一个异步调用对象
+var xmlHttp;
+if(window.XMLHTTPRequest){
+  xmlHttp = new XMLHTTPRequest();
+}else{
+  //IE5,6
+  xmlHttp = new ActiveObject("Microsoft.XmlHttp");
+}
+
+//(2)创建一个新的‘HTTP’请求，并制定该http请求的方法，‘URL’及验证信息
+//POST
+xmlHttp.open('POST',"demo.php",'true');//建立连接
+xmlHttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+xHttp.send("fname=Henry&lname=Ford");//发送请求
+//GET
+xmlHttp.open('POST',"demo.php?fname=Henry&lname=Ford",'true');
+xHttp.send()
+
+//服务器响应及相应操作
+xmlHttp.onreadystatechange = function(){//当xmltHttp对象就序状态改变时触发事件
+  if(xmlHttp.readyState === 4 && xmlHttp.status ===200){
+  //请求完成并且相应已经就绪&&响应状态码为200相应成功
+    利用dom实现局部刷新
+  }
+}
+
+jQuery 的方法
+1.$.ajax()
+2.$.get()
+3.$.post()
+$.ajax({
+  url:"demo.php",
+  type:"POST",//POST?GET
+  data:{
+    username:"tom",
+    age:12
+  },
+  success:function(data){
+    //相应成功后的回调函数
+    alert(data);//这个data是服务器相应成功后给的数据
+  },
+  error:function(){
+    alert("error");
+  }
+});
+$.get() 方法通过 HTTP GET 请求从服务器上请求数据。
+$.get(){
+  "demo.php",
+  {username:"wang",
+   age:12
+  },
+  function(data){
+    alert('data');
+  },
+  "json"//服务器返回的数据的数据格式
+}
+$.post() 方法通过 HTTP POST 请求从服务器上请求数据。
+$.post(){
+  "demo.php",
+  {username:"wang",
+   age:12
+  },
+  function(data){
+    alert('data');
+  },
+  "json"//服务器返回的数据的数据格式
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
