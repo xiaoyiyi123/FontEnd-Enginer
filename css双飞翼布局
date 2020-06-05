@@ -10,46 +10,56 @@ HTML
 <div class = "footer"></div>
 
 CSS
-.header{
-  width:100%;
-  height:30px;
-  background-corlor:red;
-}
-.footer{
-  width:100%;
-  height:30px;
-  background-corlor:red;
-}
-.container{
-  overflow:hidden;
-}
-.middle{
-  width:100%;
-  float:left;
-}
-.innerMiddle{
-  width:100%;
-  height:100px;
-  background-corlor:green;
-}
-.left{
-  width:100px;
-  float:left;
-  margin-left:-100%;
-  height:100px;
-  background-corlor:yellow;
-}
-.right{
-  width:100px;
-  float:left;
-  margin-left:-100px;
-  background-corlor:yellow;
-}
-.container::after{
-  content:"";
-  display:block;
-  clear:both;
-}
+.header {
+            width: 100%;
+            height: 30px;
+            background-color: aqua;
+            border: 1px solid black;
+            
+        }
+
+        .footer {
+            width: 100%;
+            height: 30px;
+            background-color: red;
+        }
+
+        .container {
+            overflow: hidden;
+        }
+
+        .middle {
+            width: 100%;
+            float: left;
+        }
+
+        .innerMiddle {
+            width: 100%;
+            height: 100px;
+            
+            background-color: green;
+        }
+
+        .left {
+            width: 100px;
+            float: left;
+            margin-left: -100%;
+            height: 100px;
+            background-color: yellow;
+        }
+
+        .right {
+            width: 100px;
+            float: left;
+            height: 100px;
+            margin-left: -100px;
+            background-color: yellow;
+        }
+      .container::after{
+          content:"";
+          display:block;
+          clear:both;
+        }
 
 
 
