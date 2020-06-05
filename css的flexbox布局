@@ -22,7 +22,7 @@
   height:100px
 }
 .right{
-  background:yello;
+  background:yellow;
   width:300px;
   height:100px;
 }
