@@ -1,0 +1,36 @@
+/*定义：函数的柯里化是js中函数式编程的一个重要概念。返回一个函数的函数。
+*实现方式，需要依赖和¥参数以及递归，通过拆分参数的方式，来调用一个参数的方法
+*以达到减少代码冗余，增加可读性的目的
+*/
+
+function curry(fn, args) {
+            var length = fn.length;
+            var args = args || [];
+            return function () {//arguments是一个类数组，这里是为了将其数组化
+                newArgs = args.concat(Array.prototype.slice.call(arguments));
+                //递归调用
+                /*判断args的个数，是否与fn的参数个数相等，相等的话
+                *就可以把参数都传给fn，进行输出；
+                *否则继续递归调用知道两者相等
+                */
+                if (newArgs.length < length) {
+                    return curry.call(this, fn, newArgs);
+                } else {
+                    return fn.apply(this, newArgs);
+                }
+            }
+        }
+        function multiFn(a, b, c) {
+            console.log(a * b * c);
+        }
+        var multi = curry(multiFn);
+        multi(2)(3)(4);
+        multi(2, 3, 4);
+        multi(2)(3, 4);
+        multi(2, 3)(4);
+
+
+
+
+
+
