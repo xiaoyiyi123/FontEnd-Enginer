@@ -23,7 +23,7 @@ xmlHttp.open('POST',"demo.php",'true');//建立连接
 xmlHttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
 xHttp.send("fname=Henry&lname=Ford");//发送请求
 //GET
-xmlHttp.open('POST',"demo.php?fname=Henry&lname=Ford",'true');
+xmlHttp.open('GET',"demo.php?fname=Henry&lname=Ford",'true');
 xHttp.send()
 
 //服务器响应及相应操作
