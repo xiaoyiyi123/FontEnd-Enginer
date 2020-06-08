@@ -1,0 +1,99 @@
+JS中的new关键字之恍然大明白
+前期知识储备： 对象的创建方法
+1） var obj = {}对象字面量  
+2)  构造函数方法创建对象   var obj = new Object(); 系统自带的构造函数Object
+                        function Person(){}
+                        var person1 = new Person();自定义的方法
+                        
+构造函数的内部原理：1.在函数体最前面隐式的加上this={}空对象
+                 2.执行this.xxx = xxx;
+                 3.最后一步隐式的返回this
+                 
+                 function Student(name, age, sex){
+                      //var this = {}在函数体最前面隐式的加上this={}空对象
+                      this.name = name;//执行this.xxx = xxx;
+                      this.age = age;//执行this.xxx = xxx;
+                      this.sex = sex;//执行this.xxx = xxx;
+                      //return this;最后一步隐式的返回this
+                 }
+                 var student = new Student('liu',12,felmale);
+
+new关键字的作用及原理
+阅读下面代码分析运行test()和new test()的结果分别是什么
+var a = 5;
+function test(){
+  a = 0;
+  alert(a);
+  alert(this.a);
+  var a;
+  alert(a);
+}
+new test();        new的时候在函数体的最顶部隐式的定义一个this的空函数this{} 所以执行的结果是0，undefined，0
+test();            没有new关键字的时候相当于window.test()此时this指向window范围 所以执行的结果是0，5，0
+
+网上所有的解释new关键字的原理
+1.创建一个空的js对象即{}
+2.将函数的prototype赋值给对象的__proto__属性
+3.调用函数并将步骤1新建的对象作为函数的this上下文
+4.如果该函数没有返回值活着返回值不是对象，则返回创建的对象，如果显式的返回一个对象则直接返回该对象
+
+伪代码实现
+function Person(name){
+  this.name = name;
+}
+new Person("John")={
+  var this = {};//创建一个空的js对象即{}
+  this.__proto__ = Person.prototype;//将函数的prototype赋值给对象的__proto__属性
+  var result = Person.call(this,"John");
+  return typeof result === "object" ? result: this;如果该函数没有返回值活着返回值不是对象，则返回创建的对象，如果显式的返回一个对象则直接返回该对象
+}
+
+填写以下内容让下面的代码支持a.name = "name1"; b.name = "name2"
+function obj(name){
+  (1)
+}
+obj.(2) = "name2";
+var a = obj('name1');
+var b = new obj;
+//思路解析 
+首先看var b = new obj; 在函数体的最顶部隐式的声明一个this={}
+this.__proto__ = obj.prototype;//将函数的prototype赋值给对象的__proto__属性
+最后一步隐式的返回一个this{}
+因为var b = new obj;的时候没有给函数传参，所以此时b本身并没有name属性所以b.name=undefined，要想找到b的name的属性值需要沿着原型链网上寻找
+所以将obj.prototype.name = "name2"将obj的原型上的name属性设置为name2
+其次看var a = obj("name1");并没有使用new关键字，就直接相当于window.obj("name1")此时this指向window
+function obj(name){
+  if(name){
+    var that = {};
+    that.name = name;
+    return that;
+  }
+}
+接下来看一下模拟的实现一个构造函数
+function Person(name,age){
+  var that = {};
+  that.name = name;
+  that.age = age;
+  return that;//将that作为一个对象返回that对象里含有name和age两个属性
+}
+
+var person = Person("liu",12);//将函数里面返回的that对象返回赋值给person
+console.log(person.name);//liu
+console.log(person.age);//12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,67 @@
+浅层克隆：原理其实就是一个循环将一个对象的所有属性复制给另一个对象
+但是对于js的原始值是没问题，对于引用值会出现问题
+浅层克隆的实现
+var  obj = {
+  name:"abc",
+  age:123,
+  sex:male
+}
+var obj1 = {}
+function clone(origin,target){
+  var target = target || {};//用来容错，万一用户没有传第二个参数，直接用一个空对象当作目标
+  for(var prop in origin){
+    target[prop] = origin[prop];
+  }
+  return target;
+}
+clone(obj,obj1);
+
+深层克隆：就是为了让引用值也能被拷贝，并且不改变原有值
+实现思路：本质上就是挨个判断原始对象的属性类型
+1.遍历对象的属性 for(var prop in origin){}
+2.判断是否是原始值typeof 引用值的类型为object
+3.若为引用值则看是数组还是对象（明确判断数组的方法：instanceof toString constructor）
+4.建立相应的数组或者对象
+
+实现：
+var obj={
+  name: "abc",
+  age:123,
+  card:["visa","master"];
+  wife:{
+  name:"wang",
+  son:{
+  name:'aaa',
+  age:10
+  }
+  }
+}
+var obj1 = {}
+
+function deepClone(origin,target){
+  var target = target || {};
+  toStr = Object.prototype.toString();
+  arrStr = '[object Array]';
+  for(var prop in origin){
+    if(origin.hasOwnProtorype(prop)){//Object的hasOwnProperty()方法返回一个布尔值，判断对象是否包含特定的自身（非继承）属性。即该属性是否为原型脸上的属性
+      if(origin[prop]!== 'null'&& typeof(origin[prop]) == 'object'){
+        if(toStr.call(origin[prop]) == arrStr){
+          target[prop] = [];
+        }else{
+          target[prop] = {};
+          }
+          deepClone(origin[prop],target[prop]);//递归，递归的出口为属性值为原始值
+      }else{
+        target[prop] = origin[prop];
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
