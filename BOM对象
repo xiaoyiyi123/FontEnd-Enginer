@@ -1,0 +1,69 @@
+BOM概述
+browser object model的缩写，简称浏览器对象。
+BOM提供了独立于内容与浏览器窗口进行交互的对象。
+BOM主要管理窗口与窗口之间的通讯，因此其核心对象是window
+BOM缺乏标准，js语法标准阻止是ECMA，DOM语法标准组织是W3C
+BOM最初是Netscape浏览器标准的一部分
+
+BOM包含以下对象：
+1.window对象：表示浏览器窗口，是js的顶层对象，所有定义在全局作用域中的变量，函数都变成window对象的属性和方法
+打开窗口：window.open(url,target,param);
+/* url    要打开的地址
+* target 新窗口的位置     _blank(默认)  _self 
+*param  新窗口的一些设置
+*返回值，新窗口的句柄
+*/
+关闭窗口：window.close();
+定时器   setIiterval      clearInterval 
+        setTimeout       clearTimeout
+系统对话框
+alert()    // 系统弹窗
+confirm()  // 确认、取消弹窗
+prompt()   // 输入弹窗
+
+2.location对象：浏览器当前的url信息
+location对象：表示载入窗口的URL，也可用window.location引用它
+location.href //当前载入页面的完整URL
+location.host //服务器的名字
+location.pathname //URL中主机名后的部分，如/pictures/index.htm
+location.hash //如果URL包含#，返回该符号之后的内容，如#anchor1
+location.reload(true | false); //重新载入当前页面，为false时从浏览器缓存中重载，为true时从服务器端重载，默认为false
+document.location.reload(URL) //打开新的网页
+location.assign -- 设置当前文档的URL
+location.replace() -- 设置当前文档的URL，并且在history对象的地址列表中移除这个URL location.replace(url);
+location.reload() -- 重载当前页面
+
+3.navigator对象：浏览器本身的信息
+window.navigator.appCodeName //浏览器代码名
+window.navigator.appName //浏览器步伐名
+window.navigator.appMinorVersion //浏览器补钉版本
+window.navigator.cpuClass //cpu类型x86
+window.navigator.platform //操作体系类型win32
+window.navigator.plugins
+window.navigator.opsProfile
+window.navigator.userProfile
+window.navigator.systemLanguage //客户体系语言zh-cn简体中文
+window.navigator.userLanguage //用户语言,同上
+window.navigator.appVersion //浏览器版本(包括 体系版本)
+window.navigator.userAgent//用户代理头的字符串表示
+window.navigator.onLine //用户否在线
+window.navigator.cookieEnabled //浏览器是否撑持cookie
+window.navigator.mimeTypes
+
+
+4.history对象：浏览器的浏览历史记录信息
+history.back() //在浏览历史里后退一步
+history.forward() //在浏览历史里前进一步
+history.go(i) //到汗青详细登记单的第i位
+h5里的history：
+pushState(a,b,c)//a:数据 c:地址栏
+window.onpopstate
+
+5.screen对象：浏览器的屏幕信息
+window.screen.width //屏幕宽度
+window.screen.height //屏幕高度
+window.screen.availWidth //可用宽度(除去任务栏的高度)
+window.screen.availHeight //可用高度(除去任务栏的高度)
+
+6.document对象：当前窗口的网页文档。该对象是js对DOM的具体实现。
+document.write() //动态向页面写入内容
