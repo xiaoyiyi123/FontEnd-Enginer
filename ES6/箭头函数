@@ -1,0 +1,65 @@
+基本用法：
+var f = v => v;
+<=>
+var f = function (v){
+  return v;
+}
+
+var result = values.sort(function(a,b){
+  return a-b;
+})
+<=>
+var result = values.sort((a,b) => a-b);
+rest 参数域箭头函数的结合
+const numbers = (...nums) => nums;
+numbers(1,2,3,4,5);//[1,2,3,4,5]
+
+注意点：
+1.箭头函数的this对象就是定义是所在的对象，而不是使用时所在的对象
+ const p = {
+            name: 'wang',
+            a: ()=>{
+                console.log("a.this"+this);
+                console.log(this.name);
+            },
+            b: function(){
+                console.log("b.this"+this);
+                console.log(this.name);
+            }
+        }
+p.a();//a.this[object Window] console.log(this.name);输出为空
+p.b();//b.this[object Object] wang
+箭头函数没有this的绑定，必须通过查找作用链来决定其值。如果箭头函数被非箭头函数包含，则this绑定的是最近以层的非箭头函数的this；否则。this的值会被设置为undefined。
+箭头函数在定义的时候它所处的环境相当于是window, 所以在箭头函数内部的this函数window
+ function foo() {
+    setTimeout(() => {
+        console.log('id:', this.id);
+        }, 100);
+ }
+
+ var id = 21;
+ foo.call({ id: 42 });//42当箭头函数被定义在一个非箭头函数内部是箭头函数的this指向外部的非箭头函数
+ 
+ const obj = {
+  name:'wang',
+  a: ()=>{
+      console.log(this.name);
+   }
+}
+obj.a();//输出为空箭头被定义在对象内部相当于定义在window下，所以此时箭头函数内部的this指向window
+
+2.不可以当作构造函数，不可以用new
+3.不能用call方法修改里面的this
+4.不可用arguments，可以用rest参数代替
+5.不可以用yield命令，因此箭头函数不能用做generator函数
+6.箭头函数没有prototype属性
+
+
+
+
+
+
+
+
+
+
