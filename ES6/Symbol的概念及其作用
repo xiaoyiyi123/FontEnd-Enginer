@@ -1,0 +1,76 @@
+1.概述
+引入的原因是为了保证属性的名字都是唯一的防止属性名的冲突，
+Symbol为原始数据类型，表示独一无二的值
+Symbol值不是对象不能添加属性
+let s = Symbol();不能用new
+let s = Symbol('foo');
+
+2.Symbol.prototype.description
+const sym = Symbol('foo');创建Symbol的时候，可以添加一个描述
+sym.description;//foo直接返回Symbol的描述
+
+3.作为属性名的Symbol
+在对象的内部使用Symbol值定义属性时，Symbol值必须放在方括号里面
+let s = Symbol();
+let obj = {
+  [s]:function(arg){
+    console.log(arg);
+  }
+}
+obj[s](123);
+
+4.Symbol类型还可以定义一组常量
+const log ={};
+log.level = {
+  DEBUG:Symbol('debug'),
+  INFO:Symbol('info'),
+  WARN:Symbol('warn')
+};
+console.log(log.level.DEBUG,'debug message');
+
+5.for...in 取不到Symbol声明的值
+let a = Symbol('a');
+let obj = {
+  [a]:'111',
+  b:'222',
+  c:'333'
+}
+for(let[key,value] of Object.entries(obj)){
+  console.log('for  of ', key,value);
+}//for of b 222   for of c 333
+
+6.Object.getOwnPropertySymbols只会将Symbol作为数组返回来，不能将所有的key值返回来
+let a = Symbol('a');
+let obj = {
+  [a]:'111',
+  b:'222',
+  c:'333'
+}
+Object.getOwnPropertySymbols(obj).forEach(item =>{
+  console.log(obj[item]);
+})//111
+
+7.Reflect.ownKeys将所有的key返回
+let a = Symbol('a');
+let obj = {
+  [a]:'111',
+  b:'222',
+  c:'333'
+}
+Reflect.ownKeys(obj).forEach(item =>{
+  console.log(obj[item]);
+})// 222  333  111
+
+
+
+
+
+
+
+
+
+
+
+
+
+
