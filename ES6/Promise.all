@@ -1,0 +1,40 @@
+Promise.all 方法可以实现多个 Promise 实例的并行，返回值为一个新的 Promise 实例，当所有结果都为成功时，返回一个数组，
+该数组存储的为每一个 Promise 实例的返回结果，这些 Promise 实例的返回顺序先后不确定，
+但是返回值的数组内存储的返回结果是按照数组中 Promise 实例最初顺序进行排列的，返回的数组作为返回 Promise 实例成功回调的参数，
+当其中一个失败，直接返回错误信息，并作为返回 Promise 实例失败回调的参数。
+Promise.all = function(promises){
+  return new Promise(function(resolve,reject){}
+    var result = [];
+    // 代表存入的个数，因为 Promise 为异步，不知道哪个 Promise 先成功，不能用数组的长度来判断
+    var idx = 0;
+    //用来构建全部成功的返回值
+    function processData(index,data){
+      result[index] = data;//将返回值存入数组
+      idx++;
+      if(idx === promise.length){
+        resolve(result);
+      }
+    }
+    for(var i = 0; i < promise.length; i++){
+      //因为Promise为异步，保证i值时顺序传入
+      (function(i){
+        promises[i].then(function(data){
+          promiseData(i,data);
+        },reject);
+      })(i);
+    }
+  );
+}
+
+Promise.race 方法的实现
+Promise.race 方法与 Promise.all 类似，同样可以实现多个 Promise 实例的并行，
+同样返回值为一个新的 Promise 实例，参数同样为一个存储多个 Promise 实例的数组，
+区别是只要有一个 Promise 实例返回结果，无论成功或失败，则直接返回这个结果，
+并作为新 Promise 实例 then 方法中成功或失败的回调函数的参数。
+Promise.race = function (promises) {
+    return new Promise(function (resolve, reject) {
+        for(var i = 0; i < promises.length; i++) {
+            promises[i].then(resolve, reject);
+        }
+    });
+}
