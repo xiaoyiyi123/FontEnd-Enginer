@@ -1,5 +1,21 @@
 JS中的new关键字之恍然大明白
 前期知识储备： 对象的创建方法
+
+new关键字做了4件事:
+创建空对象 {}
+将空对象分配给 this 值
+将空对象的__proto__指向构造函数的prototype
+如果没有使用显式return语句，则返回this
+function Person() { 
+this.name = '前端小智' 
+}
+根据上面描述的，new Person()做了：
+创建一个空对象：var obj = {}
+将空对象分配给 this 值：this = obj
+将空对象的__proto__指向构造函数的prototype:this.__proto__ = Person().prototype
+返回this:return this
+
+
 1） var obj = {}对象字面量  
 2)  构造函数方法创建对象   var obj = new Object(); 系统自带的构造函数Object
                         function Person(){}
