@@ -1,0 +1,88 @@
+在then方法中涉及到的Promise/A+规范：
+1.Promise实例的then方法中有两个参数都为函数，第一个参数为成功的回调onFulfilled，第二个参数为失败的回调onRejected；
+2.当Promise内部执行resolve时，调用实例的then方法执行成功的回调onFulfilled，当Promise内部执行reject或执行出错时，
+调用实例的then方法执行错误的回调onRejected；
+3.then 方法需要支持异步，即如果 resovle 或 reject 执行为异步时，then 方法的回调 onFulfilled 或 onRejected 需要在后面执行；
+4.Promise 需要支持链式调用，Promise 实例调用 then 方法后需要返回一个新的 Promise 实例。如果 then 的回调中有返回值且是一个 Promise 实例，
+则该 Promise 实例执行后成功或失败的结果传递给下一个 Promise 实例的 then 方法 onFulfilled （成功的回调）或 onRejected（失败的回调）的参数，
+如果返回值不是 Promise 实例，直接将这个值传递给下一个 Promise 实例 then 方法回调的参数，then 的回调如果没有返回值相当于返回 undefined；
+5.Promise 实例链式调用 then 时，当任何一个 then 执行出错，链式调用下一个 then 时会执行错误的回调，错误的回调没有返回值相当于返回了 undefined，
+再次链式调用 then 时会执行成功的回调；
+6.Promise 实例的链式调用支持参数穿透，即当上一个 then 没有传递回调函数，或参数为 null 时，需要后面调用的 then 的回调函数来接收；
+7.executor 在 Promise 构造函数中执行时使用 try...catch... 捕获异常，但是内部执行的代码有可能是异步的，
+所以需要在 then 方法中使用 try...catch... 再次捕获；
+8.Promise 实例的 then 方法中的回调为 micro-tasks（微任务），回调内的代码应晚于同步代码执行，在浏览器内部调用微任务接口，我们这里模拟使用宏任务代替。
+
+// promise.js -- then 方法
+Promise.prototype.then = function(onFulfilled, onRejected) {
+    // 实现参数穿透
+    if(typeof onFulfilled !== "function") {
+        onFulfilled = function (data) {
+            return data;
+        }
+    }
+
+    if(typeof onRejected !== "function") {
+        onRejected = function (err) {
+            throw err;
+        }
+    }
+
+    // 返回新的 Promise，规范中规定这个 Promise 实例叫 promise2
+    var promise2 = new Promise(function (resolve, reject) {
+        if (this.status === "fulfilled") {
+            // 用宏任务替代模拟微任务，目的是使 `then` 的回调晚于同步代码执行
+            setTimeout(function () {
+                try {  // 捕获异步的异常
+                    // onFulfilled 执行完返回值的处理，x 为成功回调的返回值
+                    var x = onFulfilled(this.value);
+
+                    // 处理返回值单独封装一个方法
+                    resolvePromise(promise2, x, resolve, reject);
+                } catch (e) {
+                    reject(e);
+                }
+            }.bind(this), 0);
+        }
+
+        if (this.status === "rejected") {
+            setTimeout(function () {
+                try {
+                    // onRejected 执行完返回值的处理，x 为失败回调的返回值
+                    var x = onRejected(this.reason);
+                    resolvePromise(promise2, x, resolve, reject);
+                } catch (e) {
+                    reject(e);
+                }
+            }.bind(this), 0);
+        }
+
+        // 如果在 Promise 执行 resolve 或 renject 为异步
+        // 将 then 的执行程序存储在实例对应的 onFulfilledCallbacks 或 onRejectedCallbacks 中
+        if (this.status === "pending") {
+            this.onFulfilledCallbacks.push(function() {
+                setTimeout(function () {
+                    try {
+                        var x = onFulfilled(this.value);
+                        resolvePromise(promise2, x, resolve, reject);
+                    } catch (e) {
+                        reject(e);
+                    }
+                }.bind(this), 0);
+            });
+
+            this.onRejectedCallbacks.push(function() {
+                setTimeout(function () {
+                    try {
+                        var x = onRejected(this.reason);
+                        resolvePromise(promise2, x, resolve, reject);
+                    } catch (e) {
+                        reject(e);
+                    }
+                }.bind(this), 0);
+            });
+        }
+    });
+
+    return promise2;
+};
