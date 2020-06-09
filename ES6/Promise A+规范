@@ -1,0 +1,44 @@
+Promise/A+ 规范中规定：
+构造函数的参数为一个名为executor的执行器，即函数，在创建是历史该函数内部逻辑为同步，即立即执行；
+executor执行是的参数分别为resolve和reject，一个为成功时执行的函数，一个为失败时执行的参数；
+在executor执行时，一旦出错立即调用reject函数，并设置错误信息给reason属性
+每个Promise实例有三个状态pending，fulfilled和rejected，默认状态为pending；
+状态只能从pending到fulfilled或从pending到rejected，且不可逆；
+执行resolve函数会使状态从pending变化到fulfilled并将参数存入实例的value属性中；
+执行reject函数会使状态从pending变化到rejected并将错误信息存入实例的reason属性中：
+
+Promise构造函数代码实现：
+function Promise(executor){
+  var self = this;
+  self.status = "pending";//当前Promise实例的状态
+  self.value = undefined;//当前Promise实例成功状态下的值
+  self.reason = undefined;//当前 Promise 实例失败状态的错误信息
+  self.onFulfilledCallbacks = [];//存储成功的回调函数的数组
+  self.onRejectedCallbacks = [];//存储失败的回调函数的数组
+  
+  //成功的执行的函数
+  function resolve(value){
+    if(self.status === "pending"){
+      self.status = "fulfilled";
+      self.value = value;
+      // 每次调用 reject 时，执行 onRejectedCallbacks 内部存储的所有的函数（在实现 then 方法中详细说明）
+      self.onRejectedCallbacks.forEach(function(fn){
+        fn();
+      });
+    }
+  }
+  try{
+    executor(resolve,reject);
+  }catch(e){
+    // 如果执行器执行时出现错误，直接调用失败的函数
+    reject(e);
+  }
+}
+// 将自己的 Promise 导出
+module.exports = Promise;
+resolve 和 reject 方法在执行的时候都进行了当前状态的判断，只有状态为 pending 时，才能执行判断内部逻辑，
+当两个函数有一个执行后，此时状态发生变化，再执行另一个函数时就不会通过判断条件，即不会执行判断内部的逻辑，
+从而实现了两个函数只有一个执行判断内部逻辑的效果.
+
+
+
