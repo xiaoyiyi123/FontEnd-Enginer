@@ -1,0 +1,173 @@
+JavaScript异步编程原理
+1.回调函数
+回调函数，就是把任务的第二段单独写在里面，等到重新执行这个任务的时候就直接调用这个函数。
+const fs = require('fs');
+fs.readFile('/etc/passed',(err,data)=>{
+  if(err){
+    console.error(err);
+    return
+  }
+  console.log(data.toString())
+})
+回调函数最大的问题就是容易形成回调地狱，即多个回调函数嵌套，降低代码可读性，增加俄逻辑的复杂性，容易出错。
+fs.readFile(fileA,function(err,data){
+  fs.readFile(fileB,function(err,data)){
+    //...
+  }
+})
+
+2.Promise就是为了解决回调函数的不足，回调地狱等问题
+const fs = require('fs');
+cosnt readFileWithPromise = file =>{
+  return new Promise((resolve,reject)=>{
+    fs.readFile(file,(err,data)=>{
+      if(err){
+        reject(err)
+      }else{
+        resolve(data)
+      }
+    })
+  })
+}
+readFileWithPromise('/etc/passwd')
+.then(data => {
+  console.log(data.toString());
+  return readFileWithPromise('/etc/profile');
+})
+.then(data => {
+  console.log(data.toString);
+})
+.catch(err => {
+  console.log(err);
+})
+Promise实际上是利用编程技巧将回调函数改成链式调用，避免回调地狱。
+最大问题就是代码冗余，原来的雨衣变得不清楚。
+
+3.async,await
+为了解决Promise的问题，async,await在ES7中被提出，是目前为止最好的解决方案
+const fs = require('fs');
+async function readFile(){
+  try{
+    var f1 = await readFileWithPromised('/etc/passwd');
+    console.log(f1.toString());
+    var f2 = await readFileWithPromised('/etc/profile');
+    console.log(f2.toString());
+  }catch(err){
+    console.log(err);
+  }
+}
+async,await函数写起来跟同步函数一样，条件是需要接受Promise或者原始类型的值
+
+实现原理
+预备知识
+1.generator
+generator函数就是一个封装的异步任务，异步操作需要暂停的地方，都要yield语句注明。
+function* gen(x){
+  console.log('start');
+  const y = yield x * 2;
+  return y
+}
+const g = gen(1);
+g.next();//start {value:2,done:false}
+g.next(4);//{value:4,done:true}
+1）gen()函数不会立即执行，而是一上来就暂停返回一个Iterator对象
+2）每次g.next()都会打破暂停的状态去执行，直到遇到下一个yield或者return
+3）遇到yield时，会执行yield后面的表达式，并返回执行后的值，然后再次进入暂停状态，此时done:false
+4）next函数可以接受参数，作为上个阶段异步任务的返回结果，被函数体内的变量接受。
+5）遇到return时，会返回值，执行结束，即done:true
+6）每次g.next()的返回值永远都是{value:...,done:...}的形式
+
+2.thunk函数
+thunk函数为转换程序，就是把带有回调函数的多参数函数转换成只接收回调函数的单参数版本
+const fs = require('fs');
+const thunkify = fn =>(...rest) => callback => fn(...rest,callback)
+const thunk = thunkify(fs.readFile)
+const readFileThunk = thunk('/etc/passwd','utf-8')
+readFileThunk((err,data) =>{
+  //....
+})
+thunk函数与Generator函数结合
+function* readFileThunkWithGen(){
+  try{
+    const content1 = yield readFileThunk('/etc/passwd','utf-8')
+    console.log(content1)
+    const content2 = yield readFileThunk('/etc/profile','utf-8')
+    console.log(content2)
+    return 'done'
+  }catch(err){
+    console.error(err)
+    return'fail'
+  }
+}
+const g = readFileThunkWithGen()
+g.next().value((err,data) =>{
+  if(err){
+    return g.throw(err).value
+  }
+  g.next(data.toString()).value((err,data) =>{
+    if(err){
+      return g.throw(err).value
+    }
+    g.next(data.toString())
+  })
+})
+
+3. co 函数库
+每次执行 generator 函数时自己写启动器比较麻烦。
+co函数库 是一个 generator 函数的自启动执行器，使用条件是 generator 函数的 yield 命令后面，
+只能是 thunk 函数或 Promise 对象，co 函数执行完返回一个 Promise 对象。
+const co = require('co')
+co(readFileWithGen).then(res => console.log(res)) // 'done'
+co(readFileThunkWithGen).then(res => console.log(res)) // 'done'
+
+4. 理解 async、await
+一句话，async、await 是 co 库的官方实现。
+也可以看作自带启动器的 generator 函数的语法糖。
+不同的是，async、await 只支持 Promise 和原始类型的值，不支持 thunk 函数。
+//generator with co
+co(function* (){
+ try {    
+    const content1 = yield readFileWithPromise('/etc/passwd', 'utf8')
+    console.log(content1)
+    const content2 = yield readFileWithPromise('/etc/profile', 'utf8')
+    console.log(content2)
+    return 'done'
+  } catch (err) {
+    console.error(err)
+    return 'fail'
+  })
+//async await
+async function readfile(){
+  try{
+    const content1 = await readFileWithPromise('/etc/passwd', 'utf8')
+    console.log(content1)
+    const content2 = await readFileWithPromise('/etc/profile', 'utf8')
+    console.log(content2)
+    return 'done'
+  }catch(err){
+    throw(err)
+  }
+}
+readfile().then(
+  res => console.log(res),
+  err => console.error(err)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
