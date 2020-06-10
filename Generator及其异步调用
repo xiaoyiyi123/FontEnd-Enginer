@@ -53,6 +53,8 @@ let it = foo(5)
 console.log(it.next())   // => {value: 6, done: false}
 console.log(it.next(12)) // => {value: 8, done: false}
 console.log(it.next(13)) // => {value: 42, done: true}
+通过next函数，可以执行对应的yield表达式，且next()函数还可以带参数，该参数可以作为上一次yield表达式的返回值，
+因为yield本身是没有返回值的，如果next()中不带参数，则yield每次运行之后
 首先 Generator 函数调用和普通函数不同，它会返回一个迭代器
 当执行第一次 next 时，传参会被忽略，并且函数暂停在 yield (x + 1) 处，所以返回 5 + 1 = 6
 当执行第二次 next 时，传入的参数等于上一个 yield 的返回值，如果你不传参，yield 永远返回 undefined。
