@@ -1,0 +1,71 @@
+1.对Generator函数的理解
+Generator函数是ES6提供的一种异步的解决方案
+Generator函数是一个状态机，封装了多个内部状态，执行Generator函数会返回一个便利器对象。
+Generator函数除了是状态及还是一个遍历器对象生成函数。返回的遍历器对象可以依次遍历Generator函数内部的每一个状态
+
+2.Generator函数的特征：
+1）function关键字与函数名之间有一个*号；
+2）Generator函数内部使用yield表达式，定义内怒的不同状态；
+3）像普通函数那样调用Generator函数，函数并不会执行，返回的是一个遍历器生成对象，即指向内部状态的指针对象
+要想generator函数执行必须调用遍历器对象的next方法，使得指针移动下一个状态。
+每次调用next方法，内部的指针就会从函数头部或上一次停下来的地方发誓执行，直到遇到下一个yield或者return语句为止。
+即：Generator函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行
+
+function *myGenerator() {
+	yield 'Hello'
+	yield 'world'
+	return 'ending'
+}
+
+let MG = myGenerator()
+
+MG.next() // {value:'Hello',done:false}
+MG.next() // {value:'world',done:false}
+MG.next() // {value:'ending',done:true}
+MG.next() // {value:'undefined',done:false}
+调用 Generator 函数，返回一个遍历器对象，代表 Generator 函数的内部指针。
+以后，每次调用遍历器对象的next方法，就会返回一个有着value和done两个属性的对象。
+value属性表示当前的内部状态的值，是yield表达式后面那个表达式的值；done属性是一个布尔值，表示是否遍历结束。
+
+next方法可以传参
+function *generator(){
+  console.log(1);
+  let a = yield;
+  console.log(a);
+  let b = yield;
+  console.log(b);
+}
+let myit = generator();
+myit.next(10);//1第一个next的传参没有任何意义
+myit.next(20);//20
+myit.next(30);//30
+
+function *foo(x) {
+      let y = 2 * (yield (x + 1))
+       //y=24 next()方法内的参数传递给了yield关键字后面的表达式
+       /**也就是it.next(12);将12 传递给yield后面的x+1，此时x+1等于12
+       *y等于2 * (yield (x + 1)) 等于24
+       */
+      let z = yield (y / 3)
+      return (x + y + z)
+    }
+let it = foo(5)
+console.log(it.next())   // => {value: 6, done: false}
+console.log(it.next(12)) // => {value: 8, done: false}
+console.log(it.next(13)) // => {value: 42, done: true}
+首先 Generator 函数调用和普通函数不同，它会返回一个迭代器
+当执行第一次 next 时，传参会被忽略，并且函数暂停在 yield (x + 1) 处，所以返回 5 + 1 = 6
+当执行第二次 next 时，传入的参数等于上一个 yield 的返回值，如果你不传参，yield 永远返回 undefined。
+此时 let y = 2 * 12，所以第二个 yield 等于 2 * 12 / 3 = 8
+当执行第三次 next 时，传入的参数会传递给 z，所以 z = 13, x = 5, y = 24，相加等于 42
+
+
+
+
+
+
+
+
+
+
+
