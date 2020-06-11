@@ -1,0 +1,79 @@
+1.概述
+Node应用由模块化组成，采用CommonJS模块规范。
+每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见
+
+CommonJS规范规定，每个模块内部,module变量代表当前模块。
+这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。
+加载某个模块，其实是加载该模块的module.exports属性。
+var x = 5;
+var addX = function(value){
+  return value + x;
+};
+module.exports.x = x;
+module.exports.addx = addX;
+通过module.exports输出变量x和函数addX
+(function (exports,require,module,_filename,_dirname){
+  let count = 0;
+  fucntion addCount(){
+    count ++;
+  }
+  module.exports = {count,addCount};//加载某个模块，其实是加载该模块的module.exports属性。
+});
+
+CommonJS模块的特点如下。
+1)所有代码都运行在模块作用域，不会污染全局作用域。
+2)模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。
+要想让模块再次运行，必须清除缓存。
+3)模块加载的顺序，按照其在代码中出现的顺序。
+
+2.module对象
+Node内部提供一个Module构建函数。所有模块都是Module的实例
+function Modile(id,parent){
+  this.id = id;
+  this.exports = {};
+  this.parent = parent;
+  //...
+}
+每个模块内部，都有一个module对象，代表当前模块。
+module.id 模块的识别符，通常是带有绝对路径的模块文件名。
+module.filename 模块的文件名，带有绝对路径。
+module.loaded 返回一个布尔值，表示模块是否已经完成加载。
+module.parent 返回一个对象，表示调用该模块的模块。
+module.children 返回一个数组，表示该模块要用到的其他模块。
+module.exports 表示模块对外输出的值。
+
+2.1 module.exports属性
+表示当前模块对外输出的借口，其他文件加载该模块，实际上就是读取module.exports变量。
+var EventEmitter = require('events').EventEmitter;
+module.exports = new EventEmitter();
+setTimeout(function(){
+  module.exports.emit('ready');
+},1000);
+上面模块会在加载后1秒后，发出ready事件.
+
+2.2 require做的任务
+   解析路径：解析路径或渠道模块内容
+    核心模块：直接返回模块
+    带有路径：则拼接出一个绝对路径，然后先读取在缓存 require.cache 再读取文件
+            如果没有加后缀，则自动加上后缀然后识别。
+    首次加载后的模块会缓存再require.cache之中，所以多次加载require，得到的对象是同一个
+    
+CommonJS输出的值是值的拷贝，总是再运行时加载。
+也就是一旦输出一个值，模块内部的变化就影响不到这个值。
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
