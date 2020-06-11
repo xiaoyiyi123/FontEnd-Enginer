@@ -1,0 +1,30 @@
+  
+一、CSS样式引入方法
+
+网页引入css样式的几种方法，包括内联式样式表、嵌入式样式表、外链式、导入式
+1.内联式样式表：直接写在现有的元素标签中，比如：
+<p style="font-size:24px;">www.jb51.net</p>
+2.嵌入式样式表：使用<style></style>标签嵌入到HTML文件的头部中<head>标记中，如：
+<style type="text/css">
+      p{font-size:18px; color:#093;}
+</style>
+3.外链式：使用<link>标签调用CSS文件（开发中用这种方式），如;
+<link href="CSS在网页中应用的方式.css" rel="stylesheet" type="text/css" />
+4.导入式：也可以使用导入方式import,但这种方式和内嵌式一样会占用网页文件的大小，并且有的浏览器解析会有问题，就是先显示网页内容在给网页内容加样式，如：
+<style type="text/css">
+    @import url("css文件")
+</style>
+
+二、CSS权重的分配
+权重的4个等级定义如下：
+第一等：代表内联样式，如: style=””，权值为1000。
+第二等：代表ID选择器，如：#content，权值为100。
+第三等：代表类，伪类和属性选择器，如.content，权值为10。
+第四等：代表类型选择器和伪元素选择器，如div p，权值为1。
+注：但是某个元素到底用哪个样式，还有3个规则：
+1，如果权重一样，按照它在CSS样式表里声明的顺序，后声明的优先，例如：
+      h1 {color: blue}
+      h1 {color: red}最终胜出的是color: red。
+2，匹配的内容按照CSS权重排序，权重大的优先：
+3，如果样式上加有!important标记，例如：
+      p{ color: gray !important}那么始终采用这个标记的样式。
