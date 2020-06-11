@@ -1,0 +1,67 @@
+在 ES6 模块中，无论你是否加入“use strict;”语句，默认情况下模块都是在严格模式下运行。
+在模块中你可以使用 import和export关键字。
+import用于输入其他模块提供的功能
+export用于规定模块的对外接口
+export：named exports (several per module) and default exports (one per module)，
+从一个模块里可以有多个不同命名的exports输出，但是只有一个default export。
+Named export(several per module)
+//------ lib.js ------
+export const sqrt = Math.sqrt;
+export function square(x) {
+    return x * x;
+}
+export function diag(x, y) {
+    return sqrt(square(x) + square(y));
+}
+//------ main.js ------
+import { square, diag } from 'lib';
+console.log(square(11)); // 121
+console.log(diag(4, 3)); // 5
+
+符号*代表所有模块所以main.js也可以改成：
+//------- main.js -----
+import * as lib from 'lib';
+console.log(lib.square(11)); // 121
+console.log(lib.diag(4, 3)); // 5
+
+Default exports (one per module)
+export default命令用于制定模块的默认输出，
+一个模块只能有一个默认输出，因此export default只能使用一次
+//------ myFunc.js ------
+export default function () {} // no semicolon!
+//------ main1.js ------
+import myFunc from 'myFunc';
+myFunc();
+//------ MyClass.js ------
+export default class {} // no semicolon!
+//------ main2.js ------
+import MyClass from 'MyClass';
+const inst = new MyClass();
+要注意:export default…后面没有分号！
+原理：默认导出可以理解为宁一种形式的命名导出，它使用的名称叫default
+
+export default主要的两种风格
+1.元素声明（Labeling declarations）
+2.直接输出值（Default-exporting values directly）
+
+import
+使用export命令定义了模块的对外接口之后，其他js文件就可以通过import命令加载这个模块。
+命名式输入
+import {变量1, 变量2, ...} from 'url';
+import {变量名 as 重命名} from 'url';
+默认输入
+import 任意变量名 from 'url';
+同时存在命名式和默认式
+import defaultName, {otherName} from 'url'
+必须在模块的最高作用域imports或者export
+ES6的模块是静态结构，它的模块思想是尽量静态化，使得在编译时就能确定模块的依赖关系以及输入和输出的变量。
+所以不能在if语句后面export或者import东西，否则会报错，所以你必须在一个模块的最外层作用于使用export或者import。
+
+
+
+
+
+
+
+
+
