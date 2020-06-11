@@ -1,0 +1,35 @@
+1.作用
+<a>元素 （或锚元素）
+可以创建一个到其他网页、文件、同一页面内的位置、电子邮件地址或任何其他URL的超链接。
+二、属性详解
+
+href属性
+
+href属性是<a>标签必须要有的属性，它为<a>标签定义一个超文本链接，但是href属性的值有多种选择：
+
+最常见的值是一个网页的URL，如 <a href="http://qq.com">QQ</a>；
+无协议<a>标签，如 <a href="//qq.com">QQ</a>，此时所用协议与当前页面相同；
+<a>标签href使用锚点#，此时点击<a>标签不发送请求，如 <a href="#aaa">aaa<a/>，此时点击a链接页面锚点变为aaa，使用锚点可以实现当前页面的跳转；
+<a>标签href内容为空， <a href="">QQ</a>，点击a链接会刷新当前页面；
+类似 <a href="?name=xxx">a链接</a> 的<a>标签，再点击后会发送一个GET请求，请求的值就是 name=xxx
+使用路径作为href的值， <a href="main.html">main</a>，点击后会跳转到main.html；
+伪协议： <a href="javascript: alert(1);"></a> 会执行href中的JavaScript代码，<a href="javascript:;"></a>将不会执行任何操作；
+download属性
+
+此属性指示浏览器下载URL而不是导航到URL
+<a href="http://qq.com" download>QQ</a>在点击此链接后并不会打开 http://qq.com，而是将此网页保存到本地。
+此属性仅适用于同源URLs
+
+target属性
+
+该属性指定在何处显示链接的资源。target属性的四个关键字具有特殊的意义：
+
+_self ：加载当前页面，如果没有指定属性，则此值为默认；
+_top： 加载响应进入顶层页面，如果没有父级框架或页面，效果与 _self相同；
+_parent：在父级页面打开地址；
+_blank：在新窗口打开；
+
+作者：WWWKY
+链接：https://www.jianshu.com/p/c7db33ef5a02
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
