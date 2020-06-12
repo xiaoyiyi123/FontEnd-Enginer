@@ -1,0 +1,90 @@
+https://segmentfault.com/a/1190000006047872
+转载请注明地址及作者: zhanfang
+基本属性
+display: none
+none 是 CSS 1 就提出来的属性，将元素设置为none的时候既不会占据空间，也无法显示，相当于该元素不存在。
+该属性可以用来改善重排与重绘
+
+display: inline
+inline也是 CSS 1 提出的属性，它主要用来设置行内元素属性，设置了该属性之后设置高度、
+宽度都无效，同时text-align属性设置也无效，但是设置了line-height会让inline元素居中
+
+display: block
+设置元素为块状元素，如果不指定宽高，默认会继承父元素的宽度，并且独占一行，
+即使宽度有剩余也会独占一行，高度一般以子元素撑开的高度为准，当然也可以自己设置宽度和高度。
+
+display: list-item
+此属性默认会把元素作为列表显示，要完全模仿列表的话还需要加上 list-style-position，list-style-type
+
+display: inline-block
+inline-block为 CSS 2.1 新增的属性。 inline-block既具有block的宽高特性又具有inline的同行元素特性。
+通过inline-block结合text-align: justify 还可以实现固定宽高的列表两端对齐布局，
+text-align: justify 属性会使行内元素两端对齐，但是要求这些行内元素总宽度至少占满一行，
+所以在总宽度不足一行的时候这个属性没用，因此在最后需要加上一些占位符。
+
+display: table
+table 此元素会作为块级表格来显示（类似table），表格前后带有换行符。
+CSS表格能够解决所有那些我们在使用绝对定位和浮动定位进行多列布局时所遇到的问题。
+例如，display:table的CSS声明能够让一个HTML元素和它的子节点像table元素一样。
+使用基于表格的CSS布局，使我们能够轻松定义一个单元格的边界、背景等样式， 
+而不会产生因为使用了table那样的制表标签所导致的语义化问题。
+利用table的特性，我们能够轻易的实现三栏布局，并且能够兼容IE8，如下是使用table属性，实现三栏布局的例子
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+</head>
+<body>
+<div class="main">
+  <div class="tr tr1">
+    <div class="td">head1</div>
+    <div class="td">head2</div>
+    <div class="td">head3</div>
+  </div>
+  <div class="tr tr2">
+    <div class="td">123</div>
+    <div class="td">123</div>
+    <div class="td">123</div>
+  </div>
+</div>
+</body>
+</html>
+  display: table;
+  width:100%;
+  border-collapse: collapse;/*为表格设置合并边框模型：*/
+}
+.tr{
+  display: table-row;
+  border-color: inherit;
+}
+.tr1 .td{
+  height:50px;
+  vertical-align: middle;
+}
+.td{
+  display: table-cell;
+  border: 1px solid;
+}
+.td:nth-of-type(1){
+  width: 100px;
+}
+.td:nth-of-type(3){
+  width: 100px;
+}
+
+display: flex
+
+flex是一种弹性布局属性
+注意，设为Flex布局以后，子元素的float、clear和vertical-align属性将失效。
+主要属性有两大类：容器属性和项目的属性
+
+
+
+
+
+
+
+
+
+
