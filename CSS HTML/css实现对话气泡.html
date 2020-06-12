@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对话气泡</title>
+    <style type="text/css">
+        .wrap{
+            position: relative;
+            width:600px;
+            height: 300px;
+            border:10px solid red;
+            border-radius: 20px;
+            margin: 50px;
+        }
+        .wrap::before{
+            position:absolute;
+            content: '';
+            width:0px;
+            height: 0px;
+            border-width: 40px 20px;
+            border-style: solid;
+            border-color: lightgreen transparent transparent;
+            bottom:-90px;
+            left:50%;
+            margin-left: -20px;
+        }
+        .con{
+            margin: 50px;
+            position: relative;
+            width:600px;
+            height: 300px;
+            border:10px solid red;
+            border-radius: 20px;
+        }
+        .con::before{
+            position:absolute;
+            content: '';
+            width:0px;
+            height: 0px;
+            border:50px solid transparent;
+            border-left: 50px solid yellow;
+            top:50%;
+            margin-top: -50px;
+            right:-110px;  
+        }
+        .dig{
+            position: relative;
+            width:600px;
+            height: 300px;
+            border:10px solid red;
+            border-radius: 20px;
+        }
+        .dig::before{
+
+            position:absolute;
+            content: '';
+            width:0px;
+            height: 0px;
+            border-width: 40px 20px;
+            border-style: solid;
+            border-color: red transparent transparent;
+            bottom:-90px;
+            left:50%;
+            margin-left: -20px;
+        }
+        .dig::after{
+            position: absolute;
+            content: '';
+            border-width: 40px 20px;
+            border-style: solid;
+            border-color:#fff transparent transparent;
+            bottom:-80px;
+            left: 50%;
+            margin-left: -20px;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrap"></div>
+    <div class="con"></div>
+    <!-- 如果需要三角形是空心的需要同时使用before和after -->
+    <div class="dig"></div>
+</body>
+</html>
