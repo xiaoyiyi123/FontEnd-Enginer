@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css水平垂直居中</title>
+    <style type="text/css">
+        .parent{
+            width: 100%;
+            height: 100px;
+            background-color: cyan;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .son{
+            width: 20%;
+            height: 20%;
+            background-color: violet;
+        }
+        .p{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: violet;
+
+        }
+        .s{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -25px;
+            margin-top: -25px;
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+        }
+        .parent1 {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          background: cyan;
+        }
+        .son1 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          margin: auto;
+          width: 30%;
+          height: 30%;
+          background: yellow;
+        }
+        .parent2 {
+          display: grid;
+      }
+        .son2 {
+        jusitify-self: center;
+        align-self: center;
+      }
+      .parent3 {
+          display: table-cell;
+          vertical-align: middle;
+          text-align: center;
+          width: 100vw;
+          height: 90vh;
+          background-color: yellowgreen;
+        }
+        .son3 {
+          display: inline-block;
+          width: 200px;
+          height: 200px;
+          background-color: Indigo;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- flex -->
+    <div class="parent">
+        <div class="son"></div>
+    </div>
+    <!-- 绝对定位加上负margin
+    父元素宽高知不知道都可以，但必须要有。
+    子元素的宽高必须已知
+    -->
+    <div class="p">
+        <div class="s"></div>
+    </div>
+    <!-- 绝对定位 + auto margin 
+        适用场景：父子元素宽高都未知的情况(该方式不需要明确知道子元素宽高，
+        子元素宽高可用百分比，对于子元素宽高不确定需要居中的情况比较适合。) 
+    -->
+    <div class='parent1'>
+        <div class='son1'></div>
+     </div>
+
+     <!-- 网格布局 适用场景：父子元素宽高未知，兼容性不大好 -->
+     <div class='parent2'>
+        <div class='son2'></div>
+     </div>
+     <!-- Table-cell + text-align + vertical-align 
+        适用场景: 父元素大小已知（非百分比高度），子元素大小未知，但子元素须为行内块元素，较好的兼容性
+     -->
+     <div class='parent3'>
+        <div class='son3'></div>
+     </div>
+</body>
+</html>
