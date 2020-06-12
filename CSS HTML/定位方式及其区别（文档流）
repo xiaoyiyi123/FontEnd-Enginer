@@ -1,0 +1,111 @@
+网页布局：
+浏览器如何对网页中的元素进行排版。主要分为：文档流，定位，浮动
+
+文档流：
+文档中可显示对象在排列时所占用的位置。将窗体自上而下分成一行行显示，并在每行中按从左到右的顺序排放元素的效果，就是文档流直观的表现。
+可分为块级元素与内联元素。
+脱离文档流的方式：float和position为absolute或者fixed
+
+定位
+position属性：把元素放置到一个静态的，相对的，绝对的或者固定的位置中。
+static，position的默认值。没有定位，元素出现在正常的文档流中。
+relative（相对定位）
+生成相对定位的元素，相对于其正常（原本的）位置进行定位。元素框便宜某个距离，元素仍保持起为定位钱的形状，他原本所占据的空间仍抱喽。
+
+absolute（绝对定位）
+生成绝对定位的元素，相对最近的一个position不为static的祖先元素进行偏移。
+不占据文档流的位置。经常用来布局。top,bottom,left,right的值确定定位元素的位置。
+
+fixed （固定定位）
+生成绝对定位的元素，相对于浏览器窗口进行定位。top,bottom,left,right的值确定定位元素的位置。
+可以做对话框或者悬浮广告。
+
+z-index
+z-index指定了一个元素及其子元素的 z-order，元素之间有重叠的时候，z-index可以决定让哪一个元素在上方。
+通常来说 z-index 较大的元素会覆盖较小的一个。仅对定位的元素有效。
+元素之间重叠默认的顺序是后面的元素会盖住前面的元素。如果设置了z-index可以改变这个顺序。但只对同级的元素有效。父元素永远在子元素后面
+
+
+浮动
+浮动由属性值float来体现，通过浮动可以解决图文混排的问题。浮动是脱离文档流的。
+清除浮动指的是：在非IE浏览器下，当容器的高度为auto，且容器的内容中有浮动的元素，
+在这种情况下，容器的高度不能自动身长以适应内容的高度，使得内容溢出到容器外面而影响布局的现象，
+为了防止这个现象的出现而进行的css处理，就叫css清除浮动。
+
+清除浮动的方式：
+1.clear：both，left，right
+写了clear之后，只能清除clear前面的浮动。
+<div class = "parent">
+  <div class = "box">box1</div>
+  <div class = "box">box2</div>
+  <div class = "box">box3</div>
+  <div class = "clear"></div>
+</div>
+.parent{
+  border:1px solid red;
+}
+.box{
+  float:left;
+  border:1px solid blue;
+}
+（div的高度是它里面整个文档流的高度，元素加上clear：both后，能让它在所有浮动元素的下面。）
+优点：简单，代码少，浏览器兼容性好。
+缺点：需要添加无语义的html元素，代码不够优雅，后期不容易维护
+
+2.after(伪类)
+伪类原理：相当于在父元素里添加一个子元素（默认内联元素），用来清除容器内的浮动元素。
+<div class = "parent">
+  <div class = "box">box1</div>
+  <div class = "box">box2</div>
+  <div class = "box">box3</div>
+</div>
+.parent{
+  border:1px solid red;
+}
+.box{
+  float:left;
+  border:1px solid blue;
+}
+.parent::after{
+  content:'';
+  display:block;
+  clear:both;
+}
+优点：兼容性好，稳定。
+缺点：代码多
+
+3.clearfix(类)
+用在文章有很多浮动时，不需要每一个都编辑一次去浮动
+<div class = "parent clearfix">
+  <div class = "box">box1</div>
+  <div class = "box">box2</div>
+  <div class = "box">box3</div>
+</div>
+<div class = "parent clearfix">
+  <div class = "box">box1</div>
+  <div class = "box">box2</div>
+  <div class = "box">box3</div>
+</div>
+.parent{
+  border:1px solid red;
+}
+.box{
+  float:left;
+  border:1px solid blue;
+}
+.clearfix:after{
+  content:'';
+  display:block;
+  clear:both;
+}
+
+4.overflow：hidden
+利用overflow触发BFC。在BFC中，每一个盒子的左边边缘(margin-lef)会触碰到
+容器的左边缘(border-left)
+优点：只用1个属性，代码少。
+缺点：不能和position配合使用，因为超出的尺寸的会被隐藏。
+
+position:relative和负margin都可以使元素位置发生偏移?二者有什么区别?
+负margin会使元素在文档流中的位置发生偏移，它会放弃偏移之前占据的空间，紧挨其后的元素会填充这部分空间；
+相对定位后元素位置发生偏移，它仍会坚守原来占据的空间，不会让文档流的其他元素流入
+
