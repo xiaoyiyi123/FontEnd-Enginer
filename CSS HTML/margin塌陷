@@ -1,0 +1,16 @@
+CSS中存在一个margin collapse，即边界塌陷或者说边界重叠。
+CSS及浏览器的设计者们希望我们在布局时，如果遇到上下两个并排内容块的安排，最好只设置其中每个块上或下margin的一处即可。
+当父元素包含子元素的时候，给子元素设置margin-top:50px;时会带着父元素一起向下移动。
+本来子元素打算自己向下移动50px但是由于父元素没有边框，导致父元素连着子元素一起向下移动。
+解决方式：
+1.给父元素添加边框
+2.设置overflow:hidden来触发BFC
+3.父元素设置padding，子元素不设置margin
+4. .clearfix:before{
+      content:'';
+      display:table;
+    }
+    <div class ="con clearfix">
+      <div class = "box"></div>
+    </div>
+    
