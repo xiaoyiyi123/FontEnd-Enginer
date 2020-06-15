@@ -17,6 +17,14 @@ Responsive Design：实现在不同屏幕分辨率的终端上浏览网页的不
 1）设置meta标签
     设置视口    <meta name="viewport" content="width=device-width,initial-scale=1.0,maxium-scale=1.0,user-scalable=no">
     user-scalable = no 属性能够解决 iPad 切换横屏之后触摸才能回到具体尺寸的问题。 
+    参数详解：
+    width=device-width ：宽度等于当前设备的宽度
+    initial-scale=1 ：初始的缩放比例。（默认为1）
+    minimum-scale=1 ：允许用户缩放到的最小比例。（默认为1）
+    maximum-scale=1 ：允许用户缩放到的最大比例。（默认为1）
+    user-scalable=no ：用户是否可以手动缩放（默认为no）
+
+
 2）通过媒体查询来设置样式
    Media Queries 是响应式设计的核心。
    它根据条件告诉浏览器如何为指定视图宽度渲染页面。假如一个终端的分辨率小于 980px，那么可以这样写：
