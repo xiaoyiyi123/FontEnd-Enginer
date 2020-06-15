@@ -1,0 +1,59 @@
+1.px:相对于显示器分辨率而言
+2.rem：默认根据html的默认字体16px来进行设置，根据浏览器的调整而变化
+3.em：1em =父体的设置字体大小
+      如果当前父体没有设置字体大小则一直往上找，实在找不着则找到html的根元素。
+4.vw/vh：css3中新引入的单位，与视图窗口有关
+  vw：相对于视图窗口的宽度，视图宽度是100vw
+  vh：相对于视图窗口的高度，视图高度是100vh
+  vmin：vw和vh中的较小值
+  vmax：vw和vh中的较大值
+  与%的区别：
+  %：大部分相对于祖先元素，也有相当于自身的情况（border-radius,translate）
+  vw/vh相对于视窗的尺寸
+  这个meta元素的视口必须声明（解决高度自适应）
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  
+  应用
+  rem布局--解决字体适配
+  rem布局原理：根据css的媒体查询功能，更改html根字体大小，实现字体大小随屏幕尺寸变化。
+  @meta only screen and (max-width:1600px) and (min-width:1280px){
+    html{
+      font-size:16px;
+    }
+  }
+  @meta only screen and (max-width:1280px) and (min-width:960px){
+    html{
+      font-size:14px;
+    }
+  }
+  @meta only screen and (max-width:960px){
+    html{
+      font-size:16px;
+    }
+  }
+  
+  <template>
+    <div class="box"></div>
+  </template>
+  <style>
+    .box{
+      width:50vw;
+      height:20vh;
+      line-height:1.5rem;
+      margin:0 auto;
+      font-weight:bold;
+      background-color:rgba(255,255,255,0.8);
+    }
+  </style>
+  50vw代表div占据视口宽度的50%高度占据视口高度20%并且随着视口的变化进行变化
+  字体则是1.5倍html字体大小。并且根据媒体查询进行字号变化。
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
