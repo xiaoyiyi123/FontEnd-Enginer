@@ -1,0 +1,104 @@
+1.谈谈对HTML5的理解
+H5从广义上说是前端开发中各种最新技术的总称，包含了HTML5、CSS3、JavaScript、ES6和各种开源框架等最新前端开发技术的总和。
+H5广泛而深入地吸收了移动互联网时代的技术精髓，再加上其自身跨平台、免安装、更新快的技术优势，
+自2014年底发布以来，已经逐渐成为现代互联网和移动互联网开发的核心技术，逐渐发展成为各行各业进入互联网+的首选开发技术。
+
+2.目前哪些浏览器支持HTML5
+几乎所有的浏览器都支持HTML5，例如Safari，Chrome，火狐，Opera，IE等。
+主流浏览器及其内核
+浏览器                          内核
+IE                             Trident    俗称IE内核
+Firefox                        Gecko      Firefox内核
+Chrome                         刚开始是Webkit后来是Blink
+Safari                         Webkit
+Opera                          最初是Presto，后来是Webkit现在是Blink内核
+
+3.HTML5中的DataList是什么
+H5中的DataList控件元素有助于提供自动完成功能的文本框。
+<datalist> 标签规定了 <input> 元素可能的选项列表。
+<datalist> 标签被用来在为 <input> 元素提供"自动完成"的特性。
+用户能看到一个下拉列表，里边的选项是预先定义好的，将作为用户的输入数据。
+请使用 <input> 元素的 list 属性来绑定 <datalist> 元素。
+<form action="demo_form.php" method="get">
+  <input list="browsers" name="browser">
+  <datalist id="browsers">
+    <option value="Internet Explorer">
+    <option value="Firefox">
+    <option value="Chrome">
+    <option value="Opera">
+    <option value="Safari">
+  </datalist>
+</form>
+
+
+4.SVG是什么？
+SVG 是一种基于 XML 语法的图像格式，全称是可缩放矢量图（Scalable Vector Graphics）。
+其他图像格式都是基于像素处理的，
+SVG 则是属于对图像的形状描述，所以它本质上是文本文件，体积较小，且不管放大多少倍都不会失真。
+此外SVG 是万维网联盟的标准，SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体。
+
+5.能否使用HTML5举个简单的SVG例子？
+<svg id="svgelem" height="[object SVGAnimatedLength]" xmlns="http://www.w3.org/2000/svg">
+<line style="stroke: rgb(255, 0, 0); stroke-width: 2px;" y2="[object SVGAnimatedLength]" x2="[object SVGAnimatedLength]" y1="[object SVGAnimatedLength]" x1="[object SVGAnimatedLength]">
+</line>
+
+6.HTML5中的canvas是什么？
+Canvas是在html中可以绘制图形的区域
+
+7.如何使用Canvas来画一条简单的线
+1）定义Canvas区域
+<canvas id="mycanvas" width="600" height="500"></canvas>
+2）获取访问canvas上下文区域
+在画布上进行绘图我们首先需要获取上下文区域的关联
+var c = document.getElementById("mycanvas");
+var ctx = c.getContext("2d");
+3)绘制图形
+ctx.moveTo(10,10);
+ctx.lineTo(200,100);
+ctx.stroke();
+完整的代码
+<button onclick="DrawMe();"/>
+<canvas id="mycanvas" width="600" height="500">
+</canvas>
+<script>
+funtion DrawMe(){
+  var c = document.getElementById("mycanvas");
+  var ctx = c.getContext("2d");
+  ctx.moveTo(10,10);
+  ctx.lineTo(200,100);
+  ctx.stroke();
+}
+</script>
+
+8.canvas和svg的区别是什么
+Canvas是使用JavaScript程序绘图(动态生成)，SVG是使用XML文档描述来绘图。     
+从这点来看：SVG更适合用来做动态交互，而且SVG绘图很容易编辑，只需要增加或移除相应的元素就可以了。       
+同时SVG是基于矢量的，所有它能够很好的处理图形大小的改变。Canvas是基于位图的图像，它不能够改变大小，只能缩放显示；
+所以说Canvas更适合用来实现类似于Flash能做的事情(当然现在Canvas与Flash相比还有一些不够完善的地方)。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
