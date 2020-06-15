@@ -1,0 +1,35 @@
+1.什么是媒体查询：media queries
+媒体指的就是各种设备 (移动设备, PC设备)
+查询指的是要检测属于哪种设备
+媒体查询: 通过查询当前属于哪种设备, 让网页能够在不同的设备下正常的预览
+
+2.媒体特性
+width  网页显示区域完全等于设置的宽度
+height 网页显示区域完全等于设置的高度
+max-width / max-height   网页显示区域小于等于设置的宽度
+min-width / min-width    网页显示区域大于等于设置的宽度
+orientation: portrait (竖屏模式)  | landscape (横屏模式)
+
+3.语法
+1）外联式
+    <link rel="stylesheet" type="text/css" href="01.css" media="only screen and (max-width: 420px)">
+2）内嵌式语法
+    @media not|only|all mediaType and (expression){
+      选择器{
+        属性：属性值;
+          ...
+        }
+     }
+      @media only screen  and (max-width: 420px) {
+      	body {
+      		background-color: red;
+      	}
+      }
+      
+      多个条件联写
+      @media only screen and (width: 320px) and (height: 568px) {}
+      
+
+
+
+
