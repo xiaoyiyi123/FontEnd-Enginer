@@ -1,0 +1,37 @@
+1.定义：
+Responsive Design：实现在不同屏幕分辨率的终端上浏览网页的不同展示方式。通过响应式设计使网站在手机和平板电脑上有更好的浏览阅读体验。
+
+2.响应式和自适应的区别：
+1）.响应式只开发一套代码，通过检测适口的分辨率，针对不同客户端在客户端做代码处理，来展示不同的布局和内容。
+    自适应需要开发多套界面，通过检测视口的分辨率来判断当前访问的设备是pc端，平板，手机等，从而请求服务层，返回不同的界面。
+2）.响应式布局等于流动网格布局，而自适应布局等于固定分割点来进行布局。
+3）.自适应布局给了你更多设计的空间，因为你只用考虑几种不同的状态。而在响应式布局中你却得考虑上百种不同的状态。
+
+3.实现响应式布局开发实现
+1）媒体查询
+2）rem布局（相对于根节点html中的字号布局）
+3）百分比布局
+4）视口单位布局（vm/vh）
+
+4.响应式布局设计步骤
+1）设置meta标签
+    设置视口    <meta name="viewport" content="width=device-width,initial-scale=1.0,maxium-scale=1.0,user-scalable=no">
+    user-scalable = no 属性能够解决 iPad 切换横屏之后触摸才能回到具体尺寸的问题。 
+2）通过媒体查询来设置样式
+   Media Queries 是响应式设计的核心。
+   它根据条件告诉浏览器如何为指定视图宽度渲染页面。假如一个终端的分辨率小于 980px，那么可以这样写：
+   @media screen and (max-width: 980px) {
+      #head { … }
+      #content { … }
+      #footer { … }
+    }
+3）设置多种视图的宽度
+   宽度使用（%，rem，vm&vh）
+   处理图片缩放
+   其他属性处理
+   （如pre/iframe/video等，都要缩放其大小，table建议不要增加padding属性，低分辨率下是内容居中）
+    /** iPad **/
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {}
+    /** iPhone **/
+    @media only screen and (min-width: 320px) and (max-width: 767px) {}
+    
