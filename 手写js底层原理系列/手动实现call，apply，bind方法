@@ -1,0 +1,103 @@
+原本call的方法使用：
+ var name = "wang";
+ var age = 13;
+ var obj = {
+    name: "liu",
+    age: 18
+   };
+ function sayHi() {
+     console.log(this.name);
+   }
+ sayHi();//wang
+ sayHi.call(obj);//liu
+ 
+ 手写实现call方法
+ Function,prototype.myCall = function(context){
+ 
+  if(typeof this !== "function"){
+    console.error("type error");
+  }
+  context = context || window;//call函数第一个参数为this指向目标，若不传指向window
+  context.fn = this;//将要执行的函数赋值context对象的fn属性，这样调用函数时，内部this就指向了context
+  const args = [...arguments].slice(1);//获取参数
+  const result = context.fn(...args);//原本call函数调用原函数，这里也调用函数
+  delete context.fn;//删除context对象的fn属性
+  return result;//调用结果返回
+ }
+ 实现分析：
+ 1.context为可选参数，如果不传的话默认为window
+ 2.给context创建一个fn属性，并将值设置为需要的调用的函数 context.fn = this
+ 3.因为call可以传入多个参数，所以需要将参数剥离出来
+ 4.调用函数并将对象上的函数删除
+ 
+ 
+ // apply 函数实现
+
+Function.prototype.myApply = function(context) {
+  // 判断调用对象是否为函数
+  if (typeof this !== "function") {
+    throw new TypeError("Error");
+  }
+
+  let result = null;
+
+  // 判断 context 是否存在，如果未传入则为 window
+  context = context || window;
+
+  // 将函数设为对象的方法
+  context.fn = this;
+
+  // 调用方法
+  if (arguments[1]) {
+    result = context.fn(...arguments[1]);
+  } else {
+    result = context.fn();
+  }
+
+  // 将属性删除
+  delete context.fn;
+
+  return result;
+};
+
+// bind 函数实现
+Function.prototype.myBind = function(context) {
+  // 判断调用对象是否为函数
+  if (typeof this !== "function") {
+    throw new TypeError("Error");
+  }
+
+  // 获取参数
+  var args = [...arguments].slice(1),
+    fn = this;
+
+  return function Fn() {
+    // 根据调用方式，传入不同绑定值
+    return fn.apply(
+      this instanceof Fn ? this : context,
+      args.concat(...arguments)
+    );
+  };
+};
+bind 函数的实现步骤：
+
+1.判断调用对象是否为函数，即使我们是定义在函数的原型上的，但是可能出现使用 call 等方式调用的情况。
+2.保存当前函数的引用，获取其余传入参数值。
+3.创建一个函数返回
+4.函数内部使用 apply 来绑定函数调用，需要判断函数作为构造函数的情况，这个时候需要传入当前函数的 this 给 apply 调用，其余情况都传入指定的上下文对象。
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
