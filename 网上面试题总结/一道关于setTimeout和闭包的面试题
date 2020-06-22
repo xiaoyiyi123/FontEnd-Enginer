@@ -1,0 +1,56 @@
+1.function test(){
+    for (var i=0; i<5; i++) { 
+       setTimeout( function timer() {
+           console.log(new Date(),i);
+       }, 1000*i);
+   }
+   console.log("end",new Date(),i);
+}
+test();
+//
+end 2020-06-22T11:22:25.827Z 5
+每隔一秒输出一个下面的
+2020-06-22T11:22:25.834Z 5
+2020-06-22T11:22:26.829Z 5
+2020-06-22T11:22:27.828Z 5
+2020-06-22T11:22:28.834Z 5
+2020-06-22T11:22:29.830Z 5
+
+function test1(){
+    for (var i=0; i<5; i++) { 
+        (function(i){
+            setTimeout( function timer() {
+                console.log(new Date(),i);
+            }, 1000*i);
+        })(i);
+   }
+   console.log("end",new Date(),i);
+}
+test1();
+
+//
+end 2020-06-22T11:34:08.226Z 5
+2020-06-22T11:34:08.229Z 0
+2020-06-22T11:34:09.227Z 1
+2020-06-22T11:34:10.228Z 2
+2020-06-22T11:34:11.229Z 3
+2020-06-22T11:34:12.230Z 4
+
+function test2(){
+    let j;
+    for (let i=0; i<5; i++) { 
+       setTimeout( function timer() {
+           console.log(new Date(),i);
+       }, 1000*i);
+       j=i;
+   }
+   console.log("end",new Date(),j);
+}
+test2();
+//
+end 2020-06-22T11:31:05.700Z 4
+2020-06-22T11:31:05.702Z 0
+2020-06-22T11:31:06.705Z 1
+2020-06-22T11:31:07.702Z 2
+2020-06-22T11:31:08.701Z 3
+2020-06-22T11:31:09.706Z 4
