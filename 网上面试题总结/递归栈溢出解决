@@ -1,0 +1,76 @@
+原本的递归溢出情况：
+var i = 0;
+function callback(){
+  i++;
+  console.log(i);
+  if(i==10000000000){
+  return;
+  }else{
+    callback();
+  }
+}
+callback();
+解决方式
+1:利用setTimeout的特点，任务在之后的事件循环执行，可以解决一些递归溢出
+例如：
+var i = 0;
+ 
+function callback(p1,p2,p3,p4 ) {
+    i++;
+    document.writeln(p1);
+ 
+    if (i == 100000) {
+        return; //循环到很多次才返回.ie下一般3000多层就堆栈溢出了, google浏览器相对要大一点一般9500以上..
+    } else {
+       addTask(callback,0,"参数"+i,"参数2","参数3","参数4");  //递归调用变成了非递归调用
+    }
+}
+ 
+/**
+*添加一个任务，
+* 	 @param {Function} fun 任务函数名
+*	 @param {number} delay 定时时间
+*	 @param {object} params 传递到fun中的参数
+*/
+function addTask(fun, delay) {
+    if (typeof fun == 'function') {
+        var argu = Array.prototype.slice.call(arguments, 2);
+        var f = (function () {
+            fun.apply(null, argu);
+        });
+        return window.setTimeout(f, delay);
+    }
+    return window.setTimeout(fun, delay);
+}
+callback(i);
+
+解决方案2
+利用蹦床函数trampoline可以讲递归转化为循环执行
+var i = 0;
+function trampoline(f){
+  while(f && f instanceof Function){
+    f = f();
+  }return f;
+}//蹦床函数接受一个函数f为参数，只需放执行后返回一个函数就可以继续执行从而形成循环执行
+
+function callback(i){
+  i++;
+  console.log(i);
+  if(i==10000000000){
+  return;
+  }else{
+    callback.bind(null,i);
+  }
+}
+
+trampoline(callback(0));
+
+
+
+
+
+
+
+
+
+
