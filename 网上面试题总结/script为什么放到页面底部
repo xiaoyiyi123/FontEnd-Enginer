@@ -1,0 +1,128 @@
+因为浏览器渲染HTML文件是从上往下渲染的。
+即限制性head标签里的内容，再执行body标签里的，一行行渲染下去。
+无论当前js代码是内嵌还是在外链文件中，页面的下载和渲染都必须停下来等待脚本执行完成。
+js执行过程好事过越久，浏览器等待响应用户输入的时间就越长。
+浏览器在下载和执行脚本时出现阻塞的原因在于，脚本可能会改变页面或 JavaScript 的命名空间，它们对后面页面内容造成影响。
+所以js尽量放底部可以有一定的性能优化效果。
+
+无阻塞的脚本
+无阻塞脚本的秘诀在于，在页面加载完成后才加载 JavaScript 代码。这就意味着在 window 对象的 onload事件触发后再下载脚本。
+延迟加载脚本
+HTML 4 为<script>标签定义了一个扩展属性：defer。Defer 属性指明本元素所含的脚本不会修改 DOM，因此代码能安全地延迟执行。
+defer 属性只被 IE 4 和 Firefox 3.5 更高版本的浏览器所支持，所以它不是一个理想的跨浏览器解决方案。
+在其他浏览器中，defer 属性会被直接忽略，因此<script>标签会以默认的方式处理，也就是说会造成阻塞。
+然而，如果您的目标浏览器支持的话，这仍然是个有用的解决方案
+<script type="text/javascript" src="script1.js" defer></script>
+
+defer 属性对脚本行为的影响
+<html>
+<head>
+    <title>Script Defer Example</title>
+</head>
+<body>
+    <script type="text/javascript" defer>
+        alert("defer");
+    </script>
+    <script type="text/javascript">
+        alert("script");
+    </script>
+    <script type="text/javascript">
+        window.onload = function(){
+            alert("load");
+        };
+    </script>
+</body>
+</html>
+这段代码在页面处理过程中弹出三次对话框。不支持 defer 属性的浏览器的弹出顺序是：“defer”、“script”、“load”。
+而在支持 defer 属性的浏览器上，弹出的顺序则是：“script”、“defer”、“load”。
+请注意，带有 defer 属性的<script>元素不是跟在第二个后面执行，而是在 onload 事件被触发前被调用。
+HTML 5 为<script>标签定义了一个新的扩展属性：async。
+它的作用和 defer 一样，能够异步地加载和执行脚本，不因为加载脚本而阻塞页面的加载。
+但是有一点需要注意，在有 async 的情况下，JavaScript 脚本一旦下载好了就会执行，所以很有可能不是按照原本的顺序来执行的。
+如果 JavaScript 脚本前后有依赖性，使用 async 就很有可能出现错误。
+
+动态脚本元素
+文档对象模型（DOM）允许您使用 JavaScript 动态创建 HTML 的几乎全部文档内容。
+<script>元素与页面其他元素一样，可以非常容易地通过标准 DOM 函数创建：
+var script = document.createElement ("script");
+   script.type = "text/javascript";
+   script.src = "script1.js";
+   document.getElementsByTagName("head")[0].appendChild(script);
+新的<script>元素加载 script1.js 源文件。此文件当元素添加到页面之后立刻开始下载。
+此技术的重点在于：无论在何处启动下载，文件的下载和运行都不会阻塞其他页面处理过程。
+您甚至可以将这些代码放在<head>部分而不会对其余部分的页面代码造成影响（除了用于下载文件的 HTTP 连接）。
+
+通过监听 onload 事件加载 JavaScript 脚本
+var script = document.createElement ("script")
+script.type = "text/javascript";
+ 
+//Firefox, Opera, Chrome, Safari 3+
+script.onload = function(){
+    alert("Script loaded!");
+};
+ 
+script.src = "script1.js";
+document.getElementsByTagName("head")[0].appendChild
+
+通过函数进行封装
+function loadScript(url, callback){
+    var script = document.createElement ("script")
+    script.type = "text/javascript";
+    if (script.readyState){ //IE
+        script.onreadystatechange = function(){
+            if (script.readyState == "loaded" || script.readyState == "complete"){
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else { //Others
+        script.onload = function(){
+            callback();
+        };
+    }
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+此函数接收两个参数：JavaScript 文件的 URL，和一个当 JavaScript 接收完成时触发的回调函数。
+属性检查用于决定监视哪种事件。
+最后一步，设置 src 属性，并将<script>元素添加至页面。此 loadScript() 函数使用方法如下：
+loadScript("script1.js", function(){
+    alert("File is loaded!");
+});
+
+使用 XMLHttpRequest(XHR)对象
+此技术首先创建一个 XHR 对象，然后下载 JavaScript 文件，接着用一个动态 <script> 元素将 JavaScript 代码注入页面。
+var xhr = new XMLHttpRequest();
+xhr.open("get", "script1.js", true);
+xhr.onreadystatechange = function(){
+    if (xhr.readyState == 4){
+        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){
+            var script = document.createElement ("script");
+            script.type = "text/javascript";
+            script.text = xhr.responseText;
+            document.body.appendChild(script);
+        }
+    }
+};
+xhr.send(null);
+此代码向服务器发送一个获取 script1.js 文件的 GET 请求。
+onreadystatechange 事件处理函数检查 readyState 是不是 4，
+然后检查 HTTP 状态码是不是有效（2XX 表示有效的回应，304 表示一个缓存响应）。
+如果收到了一个有效的响应，那么就创建一个新的<script>元素，
+将它的文本属性设置为从服务器接收到的 responseText 字符串。
+这样做实际上会创建一个带有内联代码的<script>元素。一旦新<script>元素被添加到文档，代码将被执行，并准备使用。
+
+
+减少 JavaScript 对性能的影响有以下几种方法：
+将所有的<script>标签放到页面底部，也就是</body>闭合标签之前，这能确保在脚本执行前页面已经完成了渲染。
+尽可能地合并脚本。页面中的<script>标签越少，加载也就越快，响应也越迅速。无论是外链脚本还是内嵌脚本都是如此。
+采用无阻塞下载 JavaScript 脚本的方法：
+使用<script>标签的 defer 属性（仅适用于 IE 和 Firefox 3.5 以上版本）；
+使用动态创建的<script>元素来下载并执行代码；
+使用 XHR 对象下载 JavaScript 代码并注入页面中。
+
+
+
+
+
+
