@@ -1,0 +1,87 @@
+Cookie
+1.什么是cookie：
+“Cookie”是小量信息，由网络服务器发送出来以存储在网络浏览器上，从而下次这位独一无二的访客又回到该网络服务器时，可从该浏览器读回此信息。
+这是很有用的，让浏览器记住这位访客的特定信息，如上次访问的位置、花费的时间或用户首选项（如样式表）。Cookie 是个存储在浏览器目录的文本文件，当浏览器运行时，存储在 RAM 中。
+一旦你从该网站或网络服务器退出，Cookie 也可存储在计算机的硬驱上。当访客结束其浏览器对话时，即终止的所有 Cookie。
+
+2.Cookie特点
+Cookie内存大小受限
+空	        IE 6.0	          IE 7.0 8.0	      Opera	        Fire Fox	      Safari	          Chrome
+Cookie个数	每个域名下20个	    每个域名下50个	    每个域名30个	  每个域名50个	     没有限制	          每个域名53个
+Cookie大小	4095字节	         4095字节	         4096字节	     4097字节	        4097字节	         4097字节
+
+3.Cookie具有生命周期
+Cookie可以保持登录信息到用户下次与服务器的会话，换句话说，下次访问同一网站时，用户会发现不必输入用户名和密码就已经登录了（当然，不排除用户手工删除Cookie）。
+而还有一些Cookie在用户退出会话的时候就被删除了，这样可以有效保护个人隐私。
+Cookie在生成时就会被指定一个Expire值，这就是Cookie的生存周期，在这个周期内Cookie有效，超出周期Cookie就会被清除。
+有些页面将Cookie的生存周期设置为“0”或负值，这样在关闭浏览器时，就马上清除Cookie，不会记录用户信息，更加安全。
+
+4.封装自己Cookie的增删改查函数
+function setCookie(key, value, iDay) {
+	var oDate = new Date();
+	oDate.setDate(oDate.getDate() + iDay);
+	document.cookie = key + '=' + value + ';expires=' + oDate;
+
+}
+function removeCookie(key) {
+	setCookie(key, '', -1);//这里只需要把Cookie保质期退回一天便可以删除
+}
+function getCookie(key) {
+	var cookieArr = document.cookie.split('; ');
+	for(var i = 0; i < cookieArr.length; i++) {
+		var arr = cookieArr[i].split('=');
+		if(arr[0] === key) {
+			return arr[1];
+		}
+	}
+	return false;
+}
+
+创建和存储Cookie
+对Cookie的所有操作都要通过读写document对象的Cookie属性来完成。Cookie的值都是以键值对的形式存储。
+//创建一个名字Cookie，同时设置它的过期时间
+function setCookie(c_name,value,expiredays){
+     var exdate=new Date();
+     exdate.setDate(exdate.getDate()+expiredays);
+     //encodeURIComponent() 对 URI 进行编码
+     document.cookie=c_name+ "=" +encodeURIComponent(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+}
+
+读取Cookie
+使用document.cookie可以获取到Cookie的值，不过这个值是一个字符串，为了更好地查看Cookie的值，往往会采用split()方法将Cookie中的名值对分离出来。
+function getCookie(){
+    // 初始化要返回的对象
+    var cookie = {};
+    var all = document.cookie;
+    if(all === null){
+        return cookie;
+    }
+    //分离出Cookie的各个属性
+    var list = all.split(';');
+    for(var i = 0;i < list.length;i++){
+        // 查询出等号所在的位置
+        var p = list[i].indexOf('=');
+        // 分离出名字和值
+        var name = list[i].substring(0,p);
+        var value = list[i].substring(p+1);
+        //对值进行解码
+        value = decodeURIComponent(value);
+        // 将名值对存储到对象中
+        cookie[name] = value;
+    }
+    return cookie;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
