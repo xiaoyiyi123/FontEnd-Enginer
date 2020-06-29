@@ -4,6 +4,16 @@ Cookie
 这是很有用的，让浏览器记住这位访客的特定信息，如上次访问的位置、花费的时间或用户首选项（如样式表）。Cookie 是个存储在浏览器目录的文本文件，当浏览器运行时，存储在 RAM 中。
 一旦你从该网站或网络服务器退出，Cookie 也可存储在计算机的硬驱上。当访客结束其浏览器对话时，即终止的所有 Cookie。
 
+cookie的工作原理
+（1）第一次用户登录的时候，输入用户名和密码信息，服务端接收后进行用户认证。
+（2）服务端通过验证后，生成一个token以cookie的形式放在http的response header中一起返回给客户端。
+（3）浏览器根据是否设置cookie的过期时间判断该cookie是会话cookie还是永久cookie，并将cookie存储在不同的位置。
+（4）下次进行http请求时，请求头中会自动携带存储的cookie。
+（5）服务端根据请求头中的cookie里面的token确认该用户的身份信息。
+
+
+
+
 2.Cookie特点
 Cookie内存大小受限
 空	        IE 6.0	          IE 7.0 8.0	      Opera	        Fire Fox	      Safari	          Chrome
