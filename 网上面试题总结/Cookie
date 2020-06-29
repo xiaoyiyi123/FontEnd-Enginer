@@ -84,6 +84,106 @@ function getCookie(){
 }
 
 
+前端主动向后端跨域发送cookie
+在解释这个问题之前先了解一下什么是跨域。两个域之间是不是存在跨域问题，主要是根据协议、域名、端口号这三个点进行判断，只要有一个不一样就是跨域。例如：
+（1）协议不同：http://www.baidu.com 与https://www.baidu.com
+（2）域名不同：http://www.baidu.com 与http://www.google.com
+（3）端口号不同： http://www.baidu.com:8080 与http://www.baidu.com:8000
+浏览器默认情况下无法主动跨域向后端发送cookie，需要在前端请求时加入配置项{withCredentials:true}。
+jquery: 
+$.ajax({url:'myurl',method:'GET', xhrFields:{withCredentials:true},success:function(){}});
+angular: 
+$http.get(url, {withCredentials: true})
+axios: 
+axios.defaults.withCredentials = true
+
+前端配置好后还需要在后端进行相关配置：
+在response header里面添加配置项
+"Access-Control-Allow-Credentials“, “true” 
+"Access-Control-Allow-Origin", ”yourdomain“
+
+前端cookie
+设置：
+document.cookie = 'company=eoitek;max-age=10000;domain=eoitek.com;path=/;secure'
+其中max-age是cookie的过期时间,是一个相对时间，值的单位是秒，是相对于cookie创建后多少秒才过期。
+与max-age相似的配置属性是expires，值为日期对象的toUTCString()格式，即Thu, 21 Sep 2018 06:10:38 GMT，
+是指cookie过期的绝对时间。如果max-age和expires都存在，则max-age的优先级更高。domain是我们设置cookie存放的域，
+如果没有设置则为当前主机的域。path是指cookie存储的目录，默认为当前文件的存储目录。secure，加入此配置项，则指定该cookie只能通过https协议进行传输。
+读取：
+document.cookie
+读取所有该域能获取到的cookie；格式为‘<key1>=<value1>;<key2>=<value2>;’
+
+后端cookie
+
+设置（以node为例）：
+var http = require('http');
+http.createServer(
+  function(req, res) {
+    res.setHeader('status', '200 OK');
+    res.setHeader('Set-Cookie', 'name=binbinfang;path=/;
+    max-age=1000;domain=eoitek.com');
+    res.setHeader('Access-Control-Allow-Origin', 'eoitek.com');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.write('Hello World');
+    res.end();
+}).listen(8888);
+console.log('running localhost:8888');
+
+后端cookie比前端cookie多两个配置项：
+httpOnly：设置了 HttpOnly 属性的 cookie 不能使用 JavaScript 经由 Document.cookie 属性、
+XMLHttpRequest 和 Request APIs 进行访问，以防范跨站脚本攻击（XSS）；
+SameSite=Strict
+SameSite=Lax 
+允许服务器设定一则 cookie 不随着跨域请求一起发送，这样可以在一定程度上防范跨站请求伪造攻击（CSRF）。
+
+注意事项
+（1）保存中文cookie
+如果需要保存中文cookie，则需要对中文进行UTF-8编解码，即通过encodeUriComponent（）和decodeUriComponent（）方。
+（2）保存图片和安全证书
+cookie中也可以保存二进制图片和安全证书，需要对文件进行base64编码才能保存。不过建议最好不要将这类文件保存在cookie中。
+（3）cookie的更新
+只要将key；path；domain一致，则可以通过改变key对应的value来更新cookie的值。
+（4）cookie的删除
+cookie只能更新不能删除，如果想要删除一个cookie，则通过更新设置该cookie的max-age=0即可。
+（5）cookie的安全性
+设置cookie时添加secure。
+cookie由于其设置和取值都是通过字符串的形式进行的。
+因此，在原生cookie的操作比较麻烦，可通过一些js库来方便我们的操作，包括cookies.js和js-cookie
+
+单点登录：多个不同系统整合到统一加载个平台，用户在任何一个系统登录后，可以访问这个统一加载上的所有系统。
+登录之后，用户的权限和信息不再受某个系统的限制，即使某个系统出现故障(包括统一加载平台)，其他系统还是能正常使用的。
+这就需要用户权限等信息保存到客户端，不受服务器的限制。
+例如，我们有两个站点，都需要用户身份认证，要实现单点登录的话，可以将他们的一级域名设置为相同的，
+如主站点设置为eoitek.test,子站点设置为sharplook.eoitek.test。
+在创建cookie的时候，通过设置domain=.eoitek.test;path=/；
+即可实现两个域名之间的cookie共享，如果将认证信息的token放在cookie中则可以实现单点登录了。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
