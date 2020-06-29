@@ -1,0 +1,135 @@
+概述
+localStorage和sessionStorage一样都是用来存储客户端临时信息的对象。
+他们均只能存储字符串类型的对象（虽然规范中可以存储其他原生类型的对象，但是目前为止没有浏览器对其进行实现）。
+localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
+sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
+
+sessionStorage
+sessionStorage 是HTML5新增的一个会话存储对象,用于临时保存同一窗口(或标签页)的数据,在关闭窗口或标签页之后将会删除这些数据。
+
+使用
+1. setItem 存储 value
+用途：将 value 存储到 key 字段
+用法：.setItem( key, value)
+代码示例：
+sessionStorage.setItem("key", "value"); 	
+localStorage.setItem("site", "js8.in");
+
+2. getItem 获取 value
+用途：获取指定 key 本地存储的值
+用法： .getItem(key)
+例：
+var value = sessionStorage.getItem("key"); 	
+var site = localStorage.getItem("site");
+//滚动时保存滚动位置
+$(window).scroll(function(){
+if($(document).scrollTop()!=0){
+    sessionStorage.setItem("offsetTop", $(window).scrollTop());//保存滚动位置
+    } 
+});
+//onload时，取出并滚动到上次保存位置
+window.onload = function()
+{
+    var _offset = sessionStorage.getItem("offsetTop");
+    $(document).scrollTop(offsetTop);
+};
+
+localStorage
+不同浏览器无法共享localStorage或sessionStorage中的信息。
+相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），
+但是不同页面或标签页间无法共享sessionStorage的信息。
+这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，
+那么他们之间是可以共享sessionStorage的。
+localStorage.setItem("key","value");//以“key”为名称存储一个值“value”
+localStorage.getItem("key");//获取名称为“key”的值
+
+// 设置local Storage
+localStorage.setItem('key', 'value');
+localStorage.keyName = 'valueName'; // 也可以使用这种方式
+// 读取数据
+console.log(localStorage.getItem('key'));
+// 删除数据
+localStorage.removeItem('key');
+// 清空local storage中所有的数据
+localStorage.clear();
+
+枚举localStorage
+for(var i=0;i<localStorage.length;i++){
+     var name = localStorage.key(i);
+     var value = localStorage.getItem(name);
+}
+删除localStorage中存储信息的方法：
+localStorage.removeItem("key");//删除名称为“key”的信息。
+localStorage.clear();//清空localStorage中所有信息
+通过getItem或直接使用localStorage["key"]获取到的信息均为实际存储的副本。
+
+
+localStorage - 没有时间限制的数据存储
+sessionStorage - 针对一个 session 的数据存储
+
+
+
+Storage 事件
+当 localStorage 或 sessionStorage 中的数据更新后，storage 事件就会触发，它具有以下属性：
+key —— 发生更改的数据的 key（如果调用的是 .clear() 方法，则为 null）。
+oldValue —— 旧值（如果是新增数据，则为 null）。
+newValue —— 新值（如果是删除数据，则为 null）。
+url —— 发生数据更新的文档的 url。
+storageArea —— 发生数据更新的 localStorage 或 sessionStorage 对象。
+重要的是：该事件会在所有可访问到存储对象的 window 对象上触发，导致当前数据改变的 window 对象除外。
+
+有两个窗口，它们具有相同的页面。所以 localStorage 在它们之间是共享的。
+你可以想在浏览器的两个窗口中打开此页面来测试下面的代码。
+如果两个窗口都在监听 window.onstorage 事件，那么每个窗口都会对另一个窗口中发生的更新作出反应。
+// 在其他文档对同一存储进行更新时触发
+window.onstorage = event => { // 等同于 window.addEventListener('storage', () => {
+  if (event.key != 'now') return;
+  alert(event.key + ':' + event.newValue + " at " + event.url);
+};
+localStorage.setItem('now', Date.now());
+请注意，该事件还包含：event.url —— 发生数据更新的文档的 url。
+并且，event.storageArea 包含存储对象 —— sessionStorage 和 localStorage 具有相同的事件，
+所以 event.storageArea 引用了被修改的对象。我们可能会想设置一些东西，以“响应”更改。
+
+总结：
+Web 存储对象 localStorage 和 sessionStorage 允许我们在浏览器中保存键/值对。
+key 和 value 都必须为字符串。
+存储大小限制为 2MB+，具体取决于浏览器。
+它们不会过期。
+数据绑定到源（域/端口/协议）。
+localStorage	                          sessionStorage
+在同源的所有标签页和窗口之间共享数据	        在当前浏览器标签页中可见，包括同源的 iframe
+浏览器重启后数据仍然保留	                  页面刷新后数据仍然保留（但标签页关闭后数据则不再保留）
+
+API：
+setItem(key, value) —— 存储键/值对。
+getItem(key) —— 按照键获取值。
+removeItem(key) —— 删除键及其对应的值。
+clear() —— 删除所有数据。
+key(index) —— 获取该索引下的键名。
+length —— 存储的内容的长度。
+使用 Object.keys 来获取所有的键。
+我们将键作为对象属性来访问，在这种情况下，不会触发 storage 事件。
+
+Storage 事件：
+在调用 setItem，removeItem，clear 方法后触发。
+包含有关操作的所有数据（key/oldValue/newValue），文档 url 和存储对象 storageArea。
+在所有可访问到存储对象的 window 对象上触发，导致当前数据改变的 window 对象除外（对于 sessionStorage 是在当前标签页下，对于 localStorage 是在全局，即所有同源的窗口）。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
