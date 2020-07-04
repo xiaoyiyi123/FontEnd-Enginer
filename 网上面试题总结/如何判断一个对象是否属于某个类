@@ -1,0 +1,54 @@
+js中检测对象类型的运算符有typeof,constructor, instanceof, Object.prototype.toString.call(a)===['object Array']
+
+1.typeof:一个一元运算符，返回结果是一个说明运算类型的字符串。但typeof能力有限，对于Data,RegExp,Array类型返回的是object
+
+2.instanceof：要求其左边的运算数是一个对象，右边的运算数是对象类的名称或构造函数
+判断右边的变量的原型是否存在左边变量的原型链上
+function Fn(){}
+const fn = new Fn();
+fn instanceof Fn //true
+
+手写一个instanceof方法
+//left instanceof right
+function myInstanceof(left,right){
+  //构造函数原型
+  const prototype = right.prototype
+  //实例化对象属性，指向其构造函数的原型
+  left = left.__prototype__
+  const baseType = ['String','Number','boolean','undefined','Symbol'];
+  if(baseType.includes(typeof(left))){
+    return false;
+  }
+  while(true){
+    if(left === null){
+      return false;
+    }
+    if(left === right){
+      return true;
+    }
+    left = left.__proto__;//没找着怎向上一层原型链上查找
+  }
+}
+
+3.可以通过对象的 constructor 属性来判断，对象的 constructor 属性指向该对象的构造函数，
+但是这种方式不是很安全，因为 constructor 属性可以被改写。
+var a = [1,2,3];
+a.constructor === Array
+
+4.通用方法
+Object.prototype.toString.call(a) === ['object Array']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
