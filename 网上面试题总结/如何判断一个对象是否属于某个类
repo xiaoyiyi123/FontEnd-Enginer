@@ -30,6 +30,22 @@ function myInstanceof(left,right){
   }
 }
 
+// instanceof 运算符用于判断构造函数的 prototype 属性是否出现在对象的原型链中的任何位置。
+// 实现：
+
+function myInstanceof(left, right) {
+  let proto = Object.getPrototypeOf(left), // 获取对象的原型
+    prototype = right.prototype; // 获取构造函数的 prototype 对象
+
+  // 判断构造函数的 prototype 对象是否在对象的原型链上
+  while (true) {
+    if (!proto) return false;
+    if (proto === prototype) return true;
+
+    proto = Object.getPrototypeOf(proto);
+  }
+}
+
 3.可以通过对象的 constructor 属性来判断，对象的 constructor 属性指向该对象的构造函数，
 但是这种方式不是很安全，因为 constructor 属性可以被改写。
 var a = [1,2,3];
