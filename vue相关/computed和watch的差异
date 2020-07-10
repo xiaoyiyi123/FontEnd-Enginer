@@ -1,0 +1,43 @@
+1）computed 是计算一个新的属性，并将该属性挂载到 Vue 实例上，而 watch 是监听已经存在且已挂载到 Vue 实例上的数据，所以用 watch 同样可以监听 computed 计算属性的变化。
+2）computed 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 computed 属性，才会计算新的值。而 watch 则是当数据发生变化便会调用执行函数。
+3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
+
+computed计算属性：通过其他变量计算得来的另一个属性。fullName在它所依赖的firstName,lastName这两个变量变化是重新计算自己的值。
+计算属性具有缓存机制。计算属性只有在它的相关以来发生改变时才会重新求值。
+侦听器watch是侦听一个特定的值，当该值变化是执行特定的函数。例如分页组件中，可以监听当前页码，当页码发生变化是执行对应的获取数据的函数。
+
+watch:一个数据影响多个数据
+computed：一个数据受多个数据影响
+var vm = new Vue({
+  el:'#app',
+  data:{
+    tuanName:'daydayup',
+    A:'daydayupA',
+    B:'daydayupB',
+    C:'daydayupC',
+  },
+  watch:{
+    tuanName:function(newName){
+      this.A = newName + 'A',
+      this.B = newName + 'B',
+      this.C = newName + 'C',
+    } 
+  }
+});
+vm.tuanName = 'GoodGoodStudy'更改watch选项中监听的主数据
+
+computed：一个数据受多个数据影响
+var vm = new Vue({
+  el:'#app',
+  data:{
+    firstName:'Yiyi',
+    lastName:'Wang'
+  },
+  computed:{
+    fullName:function(){
+      return this.firtName + this.lastName;
+    }
+  }
+});
+vm.firstName = 'er';
+console.log(vm.fullName);//erWang
