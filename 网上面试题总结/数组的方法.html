@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组的方法</title>
+</head>
+<body>
+    <script>
+        var arr = [10,20,30,40];
+        //pop删除数组的最后一个元素改变了元数组
+        const popRes = arr.pop();//返回被删掉的那个元素
+        console.log(popRes, arr);//40 [10, 20, 30]
+        //push向尾部添加改变了愿数组
+        const pushRes = arr.push(50);//返回添加到的那个位置
+        console.log(pushRes,arr)//4 [10, 20, 30, 50]
+        //unshift向数组头部添加一个或多个元素改变了元数组
+        const unshiftRes = arr.unshift(6,7);
+        console.log(unshiftRes,arr)//6  [6, 7, 10, 20, 30, 50]
+        // shift：删除数组头部第一个元素
+        const shiftRes = arr.shift()
+        console.log(shiftRes, arr)//6  [7, 10, 20, 30, 50]
+
+
+        const arrt = [10, 20, 30, 40, 50]
+        // slice：截取数组不改变原数组
+        const arrt1 = arrt.slice(1, 4) // [10, 20, 30, 40, 50]
+        console.log(arrt1,arrt)//[20, 30, 40] [10, 20, 30, 40, 50]
+        // splice：插入，删除替换数组
+        const spliceRes = arrt.splice(1, 2, 'a', 'b', 'c') 
+        console.log(spliceRes,arrt)//[20, 30] [10, "a", "b", "c", 40, 50]
+
+    </script>
+</body>
+</html>
