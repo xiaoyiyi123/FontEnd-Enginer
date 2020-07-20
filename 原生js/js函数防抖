@@ -1,6 +1,26 @@
 函数防抖(debounce)
-在一定时间内，在动作被连续频繁出发的情况下，动作只会执行一次，
-即调用动作过n秒之后，才会执行该动作
+在一定时间内，在动作被连续频繁出发的情况下，动作只会执行一次，即调用动作过n秒之后，才会执行该动作。
+如果n秒内高频度事件再次被触发则重新计算时间
+
+function debounce(fn){
+  var timer = null;//定义一个标记用来存放定时器的返回值
+  return function(){
+   if(timer){
+    clearTimeout(timer);
+   }else{
+    setTimeout = (()=>{
+     fn.apply(this,arguments);
+    },500);
+   }
+  }
+}
+
+function sayHi(){
+ console.log('Hi')
+}
+
+var inp = document.getElementById('inp');
+inp.addEventListener('input',debounce(sayHi));
  <input type="text"/>
     <script>
      /*防抖函数
@@ -29,32 +49,6 @@
    input.addEventListener("input",oDebounce);
     </script>
 
-从头捋一下函数防抖的实现过程
-我本原本给一个按钮绑定一个点击事件
-<button in = 'btn'>submit success</button>
-function sucess(){
-  console.log("submit sucess");
-}
-var btn = document.getElementById('btn');
-btn.addEventListener('click',sucess);
-但是有一个问题，就是不停点击的话会不停地触发事件，为了防止这种情况考虑如何来防抖，即不论用户怎么点击在限定时间内只执行一次
-实现过程
-<button in = 'btn'>submit success</button>
-function sucess(){
-  console.log("submit sucess");
-}
-const debounce(fn,delay) =>{
-  let timer = null;
-  return()={//将修饰的success函数用return给返回出去
-    clearTime(timer);//用户每次输入的时候把前一个setTimeout给clear掉
-    timer = setTimeout(()=>{
-    fn.apply(this,arguments);//将this绑定到func函数内不被更改因为不绑定的话，setTimeout里面的this指向的是全局
-    },delay);
-  } 
-}
-const oDebounce = debounce(sucess,1000);
-let btn = document.getElementById('btn');
-btn.addEventListener('click',oDebounce);
 
 
 
