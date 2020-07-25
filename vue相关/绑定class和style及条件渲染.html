@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class & style</title>
+    <script src="vue-2.4.0.js"></script>
+    <style>
+        .aClass{
+            color: aqua;
+        }
+        .bClass{
+            color: blueviolet;
+        }
+        .cClass{
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="demo">
+        <h2>class 绑定 :class = 'XXX'</h2>
+        <p class = 'cClass' :class = "a">qqqqqqq</p>
+        <!-- 动态绑定class可以有两种方法，数组和对象的方式 -->
+        <p :class = "{aClass:true,bClass:false}">pppppppp</p>
+        <p :class = "['aClass', 'cClass']">yyyyyyy</p>
+        <button @click = "update">update</button>
+        <!-- 利用对象来动态的绑定style的样式 -->
+        <h2>style 绑定</h2>
+        <p :style="{color:activeColor, fontSize: fontSize + 'px'}">{color:activeColor, fontSize: fontSize + 'px'</p>
+        <h2>v-if</h2>
+        <p v-if = "ok">success</p>
+        <p v-else>faild</p>
+        <button @click = "ok = !ok">change</button>
+        <h2>v-show</h2>
+        <p v-show = "ok">v-show success</p>
+        <p v-show = "!ok">v-show failed</p>
+        <button @click = "ok = !ok">change2</button>
+    </div>
+    <script>
+        new Vue({
+            el:"#demo",
+            data:{
+                a:'aClass',
+                isA:true,
+                isB:false,
+                activeColor: 'red',
+                fontSize:20,
+                ok:true
+
+            },
+            methods:{
+                update(){
+                    this.a = 'bClass',
+                    this.isA = false,
+                    this.isB = true,
+                    this.activeColor = 'green',
+                    this.fontSize = 50
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue基础学习</title>
+    <script src="vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-text="msg"></p>
+        <div v-html="message"></div>
+        <a :href="url">aaaaaa</a>
+        <a v-bind:href="url">aaaaa</a>
+        <input type="button" value="btn1" v-on:click="doSomething" />
+        <input type="button" value="btn2" @click="doSomething" />
+        <input type="button" value="btn3" @click="doSomething('123')" />
+        <input v-model= "message1" placeholder="edit me">
+        <p>{{message1}}</p>
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                msg:"hihihi",
+                message:"<h1>hahaha</h1>",
+                message1:"不开心",
+                url:"http://www.baidu.com"
+            },
+            methods:{
+                doSomething:function(str){
+                    console.log(str)
+                }
+            }
+        });
+    //v-on
+    // 作用：绑定事件
+    // 语法：v-on:click="say" or v-on:click="say('参数', $event)"
+    // 简写：@click="say"
+    // 说明：绑定的事件从methods中获取
+    </script>
+</body>
+</html>

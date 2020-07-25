@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理解模版指令</title>
+    <script src="vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>1.双括号表达式</h2>
+            <p>{{msg}}</p>
+            <p v-text = "msg"></p>
+            <p v-html = "msg"></p>
+        <h2>2。强制数据绑定</h2>
+         
+            <img :src="imgUrl" alt="aaa" title="bbb" />
+        <h2>3。事件绑定监听</h2>
+            <button @click='test1'>test1</button>
+            <button @click='test2(msg)'>test2</button>
+    </div>
+    
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                msg:'<a href="https://www.bilibili.com/video/BV1vb411j7D9?p=3"> 尚硅谷vue教程课</a>',
+                imgUrl:'https://stickershop.line-scdn.net/stickershop/v1/product/3663683/LINEStorePC/main.png;compress=true'
+            },
+            methods:{
+                test1(){
+                    console.log('test1');
+                },
+                test2(content){
+                    console.log(content)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
