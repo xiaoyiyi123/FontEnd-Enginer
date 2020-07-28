@@ -92,6 +92,23 @@ function deleteN(n){
 	}
 }
 
+//返回倒数第n个节点
+function kToLast(head, k){
+	if(head === null){
+		return -1;
+	}
+	var temp = head,
+		len =0;
+	while(temp !== null){
+		len++;
+		temp = temp.next;
+	}
+	for(var i = 0; i < len - k; i++){
+		head = head.next;
+	}
+	return head;
+}
+
 function reverse(head) {
 	var prevNode = null,
 		nextNode = null;
