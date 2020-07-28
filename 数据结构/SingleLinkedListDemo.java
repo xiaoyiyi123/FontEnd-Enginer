@@ -32,6 +32,9 @@ public class SingleLinkedListDemo {
 		singleLinkedList.deleteLastN(3,heroNode1);
 		singleLinkedList.list();
 		
+		int lastK = singleLinkedList.kthToLast(heroNode1, 2);
+		System.out.println(lastK);
+		
 		boolean flag = singleLinkedList.hasCircle(heroNode1);
 		System.out.println(flag);
 		
@@ -168,6 +171,22 @@ class SingleLinkedList{
 			}		
 		}
 	}
+	
+	//返回倒数第n个节点
+	public int kthToLast(HeroNode head, int k) {
+		if(head == null) return -1;
+		int index = 0;
+		HeroNode temp = head;
+		while(temp != null) {
+			index++;
+			temp = temp.next;
+		}
+		for(int i = 0; i < index - k; i++) {
+			head = head.next;
+		}
+		return head.no;
+	}
+	
 	
 	//判断单链表是否有环
 	public static boolean hasCircle(HeroNode head) {
