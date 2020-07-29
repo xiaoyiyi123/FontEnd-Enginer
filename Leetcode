@@ -1,4 +1,4 @@
-给定两个（单向）链表，判定它们是否相交并返回交点。请注意相交的定义基于节点的引用，而不是基于节点的值。换句话说，如果一个链表的第k个节点与另一个链表的第j个节点是同一节点（引用完全相同），则这两个链表相交。
+1.给定两个（单向）链表，判定它们是否相交并返回交点。请注意相交的定义基于节点的引用，而不是基于节点的值。换句话说，如果一个链表的第k个节点与另一个链表的第j个节点是同一节点（引用完全相同），则这两个链表相交。
 
 输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3
 输出：Reference of the node with value = 8
@@ -43,3 +43,42 @@ public class Solution {
         return longNode;
     }
 }
+
+
+2.
+//k个一组反转链表
+//大致过程可以分解为
+//1、找到待翻转的k个节点（注意：若剩余数量小于 k 的话，则不需要反转，因此直接返回待翻转部分的头结点即可）。
+//2、对其进行翻转。并返回翻转后的头结点（注意：翻转为左闭又开区间，所以本轮操作的尾结点其实就是下一轮操作的头结点）。
+//3、对下一轮 k 个节点也进行翻转操作。
+//4、将上一轮翻转后的尾结点指向下一轮翻转后的头节点，即将每一轮翻转的k的节点连接起来。
+public static Node reverseKGroup(Node head, int k) {
+		if (head == null || head.next == null) {
+            return head;
+        }
+        Node tail = head;
+        for (int i = 0; i < k; i++) {
+            //剩余数量小于k的话，则不需要反转。
+            if (tail == null) {
+                return head;
+            }
+            tail = tail.next;
+        }
+        // 反转前 k 个元素
+        Node newHead = reverse(head, tail);
+        //下一轮的开始的地方就是tail
+        head.next = reverseKGroup(tail, k);
+
+        return newHead;
+	}
+	public static void printlist(Node head) {
+		if(head.next == null) {
+			return;
+		}
+		Node temp = head;
+		while(temp != null) {
+			System.out.println(temp.data);
+			temp = temp.next;
+		}
+		
+	}
