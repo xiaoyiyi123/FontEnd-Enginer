@@ -1,3 +1,31 @@
+//递归的方式实现
+	//前序遍历
+	public void preOrder(TreeNode root) {
+		if(root != null) {
+			System.out.println(root.data);
+			preOrder(root.getLeftNode());
+			preOrder(root.getRightNode());
+		}
+	}
+	//中序遍历
+	public void middleOrder(TreeNode root) {
+		if(root != null) {
+			middleOrder(root.getLeftNode());
+			System.out.println(root.data);
+			middleOrder(root.getRightNode());
+		}
+	}
+	
+	//后序遍历
+	public void lastOrder(TreeNode root) {
+		if(root != null) {
+			lastOrder(root.getLeftNode());//每次获取root.getLeftNode()相当于获取当前节点的左子节点，然后把左子节点当作下一次寻找的节点实现递归
+			lastOrder(root.getRightNode());
+			System.out.println(root.data);
+		}
+	}
+
+
 
 //层次遍历
 	/**
