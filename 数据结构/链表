@@ -18,3 +18,5 @@ newHead = head
 5.让原链表的头节点head往下移动从而达到循环的目的
 head = temp
 6.循环的终止条件就是head == null
+
+
