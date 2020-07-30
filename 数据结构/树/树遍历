@@ -41,6 +41,7 @@
 		queue.offer(root);
 		while(!queue.isEmpty()) {
 			TreeNode temp = queue.poll();//定义一个中间变量，每次这个中间变量的值，都等于从队列中出的那个节点
+			System.out.print(temp.data);
 			if(temp.getLeftNode() != null) {
 				queue.offer(temp.getLeftNode());
 			}
@@ -48,4 +49,24 @@
 				queue.offer(temp.getRightNode());
 			}
 		}
+	}
+	
+	
+	//求树的最大深度问题
+	//maxDepth = 左子树和右子树的较大深度值加1
+	public int maxDepth(TreeNode node) {
+		if(node == null) {
+			return 0;
+		}
+		int max = 0;
+		int maxL = 0;
+		int maxR = 0 ;
+		if(node.getLeftNode() != null) {
+			maxL = maxDepth(node.getLeftNode());
+		}
+		if(node.getRightNode() != null) {
+			maxR = maxDepth(node.getRightNode());
+		}
+		max = maxL > maxR ? maxL + 1: maxR +1;
+		return max;
 	}
