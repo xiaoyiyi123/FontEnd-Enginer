@@ -1,0 +1,137 @@
+1. 箭头函数与普通函数的区别
+1）箭头函数比普通函数与语法上更加简洁
+2）箭头函数没有自己的this，它里面出现的this从属于所属上下文，即继承函数所处上下文中的this
+3）箭头函数中没有arguments(类数组)，只能基于...arg获取传递的参数集合，得到的这个集合本身就是一个数组
+4）箭头函数不能使用new关键字，因为箭头函数没有自己的this，也没有prototype属性
+let obj = {
+  name: "OBJ";
+};
+function fn1(){
+  console.log(this);
+}
+fn1.call(obj);//OBJ
+let fn2 = () =>{
+  console.log(this);
+}
+fn2.call(obj);//window
+回调函数中的this指向window
+document.body.onclick = function(){
+  //this: body
+  arr.sort(function(a,b){
+  //this: window
+    return a-b;
+  });
+  
+  arr.sort((a,b) => {
+    //因为是箭头函数，所以this是上下问的this
+    return b- a;
+  });
+};
+
+//回调函数:把一个函数B作为实参传给另外一个函数A，函数A在执行的时候，
+可以把传递进来的函数B去执行（执行N次，可传值）
+function each(arr, callBack){
+
+  for(let i = 0; i < arr.length; i++){
+    let item = arr[i],
+        index = i;
+    let flag = callback.call(arr,item, index);//改变回调函数中的this，使其指向arr
+    //接受回调函数返回的结果
+    if(flag === false){
+      breal;
+    }
+  }
+}
+
+each([10,20,30,40,50],function(item,index){
+  if(index > 2){
+     return flase;
+  }
+ 
+});
+
+let fn = (...args) => {
+  console.log(arg);//[10,20,30]//是一个数组
+};
+fn(10,20,30);
+
+2.如何把一个字符串的大小写取返，大写变小写小写变大写
+let str = "abcDEF1111哈哈哈";
+str = str.replace(/[a-zA-Z]/g,item =>{
+  //item为每次正则表达式匹配的结果
+  if(item.toUpperCase() === item){
+      return item.toLowerCase();
+  }else{
+    return item.toUpperCase();
+  }
+})
+
+3.实现一个字符串匹配算法，从字符串s中，查找是否存在字符串t，若存在返回位置，不存在返回-1
+let str = "WangYiyi JiaYou666";
+function search(str,t){
+	var reg = new RegExp(t);
+	var index = -1;
+	return index = str.search(reg);
+}
+console.log(search(str,'jia'))
+
+//讲解
+var obj ={100:'wang'}
+obj[100] == wang
+ong['100'] == wang
+4.输出下面代码的运行结果
+var a = {}, b = '123', c = 123;
+a[b] = 'b';
+--->a{'123':b}
+a[c] = 'c';
+--->a{123:c}
+因为对象的属性名的数据类型是字符串类型a[123]和a['123']都表示对象a相面属性名为123，的属性值
+console.log(a[b]);//c
+
+var a = {}, b = Symbol('123'), c=Symbol('123');
+a[b] = 'b';
+a[c] = 'c';
+console.log(a[b]);//b
+Symbol创建出来的值是唯一的值Symbol('123') !== Symbol('123');
+
+var a = {}, b={key:'123'}, c={key:'456'};
+a[b] = 'b';
+把对象b变成字符串，当作对象a的属性名 对象b变成字符串类型使用的方法是{}.toString=='[object Object]'
+a[c] = 'c';
+把对象c变成字符串，当作对象a的属性名 对象b变成字符串类型使用的方法是{}.toString=='[object Object]'
+相当于把对象a的名为'[object Object]'的属性名重新赋值
+console.log(a[b]);//c
+
+4.验证是否符合URL网址的格式
+//正确的url格式
+//1.协议：//http/https/ftp
+//2.//修饰符
+//3.域名部分www.xxx.xx/xxx.xx/xxx.xxx.xxx.xx
+//4.请求路径 /index.html
+            /文件夹/index.html
+            /文件夹
+            /后面啥也没有
+//5.问号传参//?xxx=xxx&xxx=xxx
+//6.哈希值#xxx
+//除了域名部分都可以省
+let str = "http://www.baidu.com/index.html?lx=1&from=wx#video";
+let reg =/^(https?:\/\/(([a-zA-Z0-9]+-?)+[a-zA-Z0-9]+\.)+[a-zA-Z]+)(:\d+)?(\/.*)?(\?.*)?(#.*)?$/
+protocol://hostname[:port][pathname][?query][#hash]（ps: 中括号为可选项）
+protocol 协议，我们只考虑 http 或 https
+hostname 主机地址，可以是域名，也可以是 IP 地址
+port 端口，http 默认端口是 80，https 默认端口是 443，可以不写
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
