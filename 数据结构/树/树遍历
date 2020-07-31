@@ -117,3 +117,66 @@ var levelOrder = function (node){
 var result = levelOrder(node1);
 console.log(result);
 
+//查找跟节点到某个节点的路径
+
+1）压入根节点，再从左子树中查找（递归进行的），如果未找到，再从右子树中查找，如果也未找到，则弹出根节点，再遍历栈中上一个节点
+2）如果找到，则栈中存放的节点就是路径所经过的节点。
+	public boolean pathToX(TreeNode root, TreeNode x) {
+		
+		if(root == null) {
+			return false;
+		}
+		Stack<TreeNode> path = new Stack<TreeNode>();
+		if(root == x) {
+			path.add(root);
+			return true;
+		}
+		//压入跟节点进行递归
+		path.add(root);
+		//递归遍历左子树
+		boolean result = pathToX(root.leftNode,x);
+		if(result == false) {//左子树没找到开始找右子树
+			result = pathToX(root.rightNode,x);
+		}
+	    //如果2边都没查找到，则弹出此根节点
+		if(result == false) {
+			path.pop();
+		}
+		return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
