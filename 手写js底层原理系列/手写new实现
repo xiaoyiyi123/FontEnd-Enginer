@@ -17,13 +17,17 @@ var objectFactory = function() {
     var obj = new Object()
     console.log('before shift arguments = ',arguments)
     获取构造函数
-    Constructor = [].shift.call(arguments)
+    Constructor = Array.prototype.shift.call(arguments);//将类数组转化为数组，并取出里面的第一个参数即为构造函数
+    //因为我们到时候的调用方式时objectFactory(构造函数，初始化参数1，.....)
     console.log('after shift arguments = ', arguments)
     console.log(`Constructor = ${Constructor}`)
-    // 2、该空对象的原型指向构造函数： 将构造函数的prototype 赋值给空对象的 __proto__属性；
+    // 2。新建的对象的原型指向构造函数： 这个新建的对象就是我们new 构造函数出来的实例对象又因为，实例对象的__proto__属性指向构造函数的prototype原型对象
+    //我们这里手动的将构造函数的prototype 赋值给空对象的 __proto__属性来模拟这一特征
     obj.__proto__ = Constructor.prototype
-    // 3、将空对象作为构造函数的this传进去，并执行该构造函数
+    // 3、因为通过new构造函数出来的实例对象，原构造函数的this指向的是刚刚new出来的实例对象
+    //通过apply方法将构造函数的this绑定到实例对象上去，并执行这个构造函数，为实例对象当中的属性赋值
     var ret = Constructor.apply(obj, arguments)
+    //这个时候的arguments只剩下除掉构造函数的参数列表了，因为shift会改变原数组
     // 4、返回新对象：如果构造函数返回的是一个对象，则返回该对象；否则（若没有返回值或者返回基本类型），返回第一步中新创建的对象；
     return typeof ret == 'object' ? ret : obj
 }
@@ -39,6 +43,21 @@ Constructor = [].shift.call(arguments)
 所以Constructor = [].shift.call(arguments)这句代码删除并且返回的就是传入call方法或者apply方法的第一个对象参数，也就是Person。
 执行了shift之后，arguments就只剩下执行函数所需的参数列表或者参数数组了
 
+去掉所有注释我们看一下
+function objecFactory(){
+    var obj = new Object(),
+        constrcutFunction = Array.prototype.shift.call(arguments);//获取原本的构造函数
+    if(typeof constrcutFunction !== "function"){
+        return;
+    }
+    obj.__proto__ = constrcutFunction.prototype;
+    var result = constrcutFunction.apply(obj,arguments);
+    //这里让一个新的变量result等于这个构造函数执行并赋值，并没有改变原来的obj对象
+    //所以原来的obj对象仍是刚定义出来时的模样
+    
+    return typeof result === "object" ? result : obj;
+    
+}
 
 
 
