@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>call,apply函数的实现</title>
+</head>
+<body>
+    <script>
+        //fn.call(objArgs.args1,args2);函数fn通过call方法将自己的执行环境指向了objArgs的执行环境
+        Function.prototype.myCall() = function(context = window){
+            if(typeof this !== "function"){
+                return;
+            }
+            context.fn = this;//这个this指的是调用call方法的函数对象
+            //将调用call的函数挂载到context上面去，为了实现函数fn通过call方法将自己的执行环境指向了objArgs的执行环境
+            var args = [...arguments].slice(1);//从位置为1的位置中截取参数
+            var result = context.fn(...args);//将context.fn这个函数执行，相当于执行了call（）方法
+            //因为你新增了一个原来context没有的属性fn所以要删掉
+            delete context.fn;
+            return result;
+        }
+
+        Functoin.prototype.myApply = function(contenxt = window){
+            if(typeof this != "function"){
+                return;
+            }
+            context.fn = this;
+            var result = null;
+            var args = [...arguments].slice(1)[0];//传入的参数一定要是一个数组
+            //判断获取的args是否是数组
+            if(!Array.isArray(args)){
+                result = context.fn();
+            }else{
+                result = contenxt.fn(...args);
+            }
+            delete context.fn;
+
+            return result;
+        }
+    </script>
+</body>
+</html>
