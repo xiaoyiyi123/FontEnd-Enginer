@@ -1,5 +1,9 @@
 搞懂this的指向问题
-1.函数与编译过程中this指向window                      预编译
+
+
+this打底是什么
+this引用的是函数对象据以执行的环境对象。也就是说函数的this也就是调用函数的执行环境。
+1.函数预编译过程中this指向window                      预编译
 function test(c){                                  AO{arguments[1]; this:window; c:1; a:undefined; b: function(){}}
   var a = 123;
   function b(){}
@@ -7,7 +11,7 @@ function test(c){                                  AO{arguments[1]; this:window;
 test(1);相当于window.test(1)
 如果new test(); 在函数体的最顶部隐式的定义一个var this = Object.create(test.prototype)然后将AO中的this给覆盖掉
 
-2.全剧作用域里的this指向window
+2.全局作用域里的this指向window
 
 3.call/apply可以改变函数运行时的this指向
 call和apply的作用其实就是借用别人的函数来实现自己的功能
@@ -93,7 +97,8 @@ bind方法会创建一个新的函数称为绑定函数，当调用这个绑定�
  1.普通的函数调用函数被谁调用this就是谁
  2.构造函数如果不用new操作符而直接调用那this指向的window，用new操作符生成对象实例后this指向新生成的对象
  3.匿名函数或不处于任何对象中的函数this指向window
- 4.如果是call/apply等制定的this是谁就是谁
+ 4.如果是call/apply等指定的this是谁就是谁
+ 5.箭头函数的this执行创建函数时的作用域
  
 
 
