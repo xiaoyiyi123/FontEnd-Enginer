@@ -1,0 +1,57 @@
+输入：
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+输出：
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+ 
+ var invertTree = function(root){
+  if(root == null){
+    return root;
+  }
+  var stack = [];
+      stack.push(root);
+  while(stack.length !== 0){
+    var temp = queue.pop();
+    var node = temp.left;
+    temp.left = temp.right;
+    temp.right = temp.left;
+    
+    if(temp.left !== null){
+      stack.push(temp.left);
+    }if(temp.right !== null){
+      stack.push(temp.right);
+    }
+    
+    return root;
+  }
+ }
+ 
+ //递归法
+ var invertTree = function(root) {
+    if (!root) return null
+    return {
+        val: root.val,
+        right: invertTree(root.left),
+        left: invertTree(root.right)
+    }
+};
