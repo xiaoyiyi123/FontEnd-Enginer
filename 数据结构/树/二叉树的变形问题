@@ -98,5 +98,85 @@ var buildTree = function(preorder, inorder) {
 
 };
 
+3.106. 从中序与后序遍历序列构造二叉树
+根据一棵树的中序遍历与后序遍历构造二叉树。
 
+注意:
+你可以假设树中没有重复的元素。
 
+例如，给出
+
+中序遍历 inorder = [9,3,15,20,7]
+后序遍历 postorder = [9,15,7,20,3]
+返回如下的二叉树：
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} inorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+var buildTree = function(inorder, postorder) {
+    if(inorder.length == 0 || postorder.length == 0) return null;
+    var postLen = postorder.length;
+    var root = new TreeNode(postorder[postLen -1]);
+    var idx = inorder.indexOf(root.val);//root在中序遍历中的位置，说明左子树有idx个节点，右子树有整个长度-1-idx个节点
+    var leftNode = buildTree(inorder.slice(0,idx),postorder.slice(0,idx));
+    var rightNode = buildTree(inorder.slice(idx+1),postorder.slice(idx,postLen-1));
+
+    root.left = leftNode;
+    root.right = rightNode;
+
+    return root;
+};
+
+4.前序+后序构造二叉树
+思路：
+用前序遍历的第一个元素创建出根节点
+用前序遍历的第二个元素x，去后序遍历中找对应的下标y，将y+1就能得到左子树的个数了
+将前序数组，后序数组拆分左右两部分
+递归的处理前序数组左边、后序数组右边
+递归的处理前序数组右边、后序数组右边
+返回根节点
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {number[]} pre
+ * @param {number[]} post
+ * @return {TreeNode}
+ */
+var constructFromPrePost = function(pre, post) {
+    if(pre.length == 0 || post.length == 0) return null;
+    var root = new TreeNode(pre[0]);
+    var len = pre.length;
+
+    var temp = pre[1],
+        tempIdx = post.indexOf(temp);
+    var leftCount = tempIdx + 1;
+
+    var leftNode = constructFromPrePost(pre.slice(1,leftCount + 1),post.slice(0,leftCount));
+    var rightNode = constructFromPrePost(pre.slice(leftCount+1),post.slice(leftCount,len-1));
+
+    root.left = leftNode;
+    root.right = rightNode;
+
+    return root;
+};
