@@ -1,3 +1,46 @@
+找一颗二叉搜索树的最近公共祖先
+因为二叉搜索树的特性，根节点的左子树一定小于根节点，根节点的右子树一定大于根节点
+所以当p.val q.val同时大于根节点的值的时候说明p，q同时位于右子树中，递归的查找右子树返回查找到的值
+反之，当p.val q.val同时小于根节点的值的时候说明p，q同时位于左子树中，递归的查找左子树返回查找到的值
+当p和q同时位于根节点的两侧是，根节点就是最近公共祖先。
+function lca(root, p,q){
+    if(p === null || q === null){
+        return null;
+    }if(root === null){
+        return root;//同时也是递归的出口
+    }
+    if(p.val < root.val && q.val < root.val){
+        return lca(root.left,p,q);
+    }else if(p.val > root.val && q.val > root.val){
+        return lca(root.right,p,q);
+    }
+    return root;//当p和q同时位于根节点的两侧是，根节点就是最近公共祖先。
+}
+
+当题目变得更加没规律，普通的二叉树，没有二叉搜索树的特性
+思路还是一样的：
+p，q同时位于右子树中时，递归的查找右子树返回查找到的值
+p，q同时位于左子树中时，递归的查找左子树返回查找到的值
+当p和q同时位于根节点的两侧时，根节点就是最近公共祖先。
+问题变为如何判断p，q在二叉树的位置？
+可以通过不断的递归查找左子树和右子树并返回查找的结果，leftNode,rightNode
+if(leftNode != null && rightNode != null){
+    return root;//说明p，q两个节点分别存在root节点的两颗子树中
+}
+if(leftNode == null && rightNode != null){//说明p，q同时存在于右子树中返回右子树查找的结果
+     return rightNode;
+  }else{
+     return leftNode;
+}
+递归的出口是：当前查找的根节点为空，或者p，q中有一个就是根节点，直接返回根节点
+ if(root == null || p == root || q == root){
+    return root;
+ }
+
+
+
+
+
 我们在二叉树中来搜索p和q，然后从路径中找到最后一个相同的节点即为父节点，
 我们可以用递归来实现，在递归函数中，我们首先看当前结点是否为空，若为空则直接返回空，若为p或q中的任意一个，也直接返回当前结点。
 if(root == null || p == root || q == root) return root;
