@@ -32,3 +32,21 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     if(left != null && right != null) return root; //情况1
     return left != null ? left : right;//情况2，3
 }
+
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || p == root || q == root){
+            return root;
+        }
+        TreeNode leftNode = lowestCommonAncestor(root.left,p,q);//递归查找左子树
+        TreeNode  rightNode = lowestCommonAncestor(root.right,p,q);//递归查找右子树
+
+        if(leftNode != null && rightNode != null){
+            return root;//说明p，q两个节点分别存在root节点的两颗子树中
+        }
+        if(leftNode == null && rightNode != null){//说明p，q同时存在于右子树中返回右子树查找的结果
+            return rightNode;
+        }else{
+            return leftNode;
+        }
+
+    }
