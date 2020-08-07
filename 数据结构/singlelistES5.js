@@ -129,27 +129,22 @@ function reverse(head) {
 	}
 }
 //删除倒数第n个节点
-function deleteLastN(n, head){
-	var len = getLength(head);
-	console.log(len)
-	if(head.next === null || n > len){
-		return;
-	}
-	var temp = head,
-		index = 0;
-	while(true){
-		if(temp === null){
-			console.log("此时为链表结尾跳出循环");
-			break;
-		}else if(index === len - n -1){
-			temp.next = temp.next.next;
-			break;
-		}else{
-			index++;
-			temp = temp.next;
-		}
-	}
-}
+var removeNthFromEnd = function(head, n) {
+    var temp = new ListNode(-1);
+    temp.next = head;
+    var  fast = temp,
+        slow = temp;
+    while(n--){//先让fast往前移动n次
+        fast = fast.next;
+    }
+    while(fast !== null && fast.next !== null){
+        fast = fast.next;
+        slow = slow.next;
+    }
+    slow.next = slow.next.next;
+
+    return temp.next;
+};
 //链表的长度
 function getLength(head){
 	var listLen = 0;
