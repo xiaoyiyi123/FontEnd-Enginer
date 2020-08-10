@@ -1,7 +1,7 @@
 斐波那契数列：
 形如1, 1, 2, 3, 5, 8, 13, 21, 34, 55的数列，后一位是前面两位相加（斐波那契数列），写出函数要求找到第 N 位是多少，如：fib(3) => 3 ， fib(5) => 8, 要求时间复杂度为O(n)。
 
-
+记忆化搜索 自顶而下
 var n = parseInt(readline().split(' ')[0]);//接收输入字符串
 var memo = new Array(n+1);//创建一个memo数组用来记忆化搜索，数组的长度为n+1，因为索引从0开始
     memo.fill(-1);//初始化数组元素全部为-1
@@ -13,3 +13,36 @@ function fibi(n){
     return memo[n]如果已经进行过操作则直接返回上次的结果无需再次操作
 }
 print(fibi(n));
+
+使用动态规划的思想来解体 自地而上
+function fibi(n){
+
+    var memo = new Array(n+1);
+    memo.fill(-1);
+    memo[0] = 1;
+    memo[1] = 1;
+    for(var i = 2; i<= n; i++){
+        memo[i] = memo[i-1] + memo[i-2];
+    }
+    return memo[n]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
