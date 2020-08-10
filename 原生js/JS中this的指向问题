@@ -1,8 +1,15 @@
 搞懂this的指向问题
 
 
-this打底是什么
-this引用的是函数对象据以执行的环境对象。也就是说函数的this也就是调用函数的执行环境。
+this到底是什么
+this引用的是函数对象据以执行的环境对象。
+也就是说函数的this也就是调用函数的执行环境。
+js中this一共有五种情况
+1）元素的事件绑定，事件触发，方法执行，方法中的this一般都是当前元素
+2）普通函数执行，谁调用这个函数，this就指向谁，函数直接执行相当于window调用this指向window
+3）匿名函数或者回调函数this指向window居多
+4）构造函数this指向创造出来的实例对象
+5）箭头函数中没有自己的this， this指的是上下文
 1.函数预编译过程中this指向window                      预编译
 function test(c){                                  AO{arguments[1]; this:window; c:1; a:undefined; b: function(){}}
   var a = 123;
