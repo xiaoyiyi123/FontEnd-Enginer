@@ -51,3 +51,33 @@ Array.prototype.myIndex = function (nums) {
       var arr = [1, 2, 5, 10, 20, 50, 100];
       var nums = 4;
       console.log(arr.myIndex(4))
+      
+      
+      
+寻找一个数组中最接近目标值的元素
+var arr = [1, 2, 5, 10, 20, 50, 100];
+      var nums = 9;
+      var start = 0;
+      var end = arr.length - 1;
+      var middleIndex = Math.floor((start + end) / 2);
+      var middle = arr[middleIndex];
+      var target = middle;
+      var sub = Math.abs(target - nums);
+      while (start <= end) {
+        
+        if (middle > nums) {
+          end = middleIndex - 1;
+        } else {
+          start = middleIndex + 1;
+        }
+       
+        middleIndex = Math.floor((start + end) / 2);
+        middle = arr[middleIndex];
+        if (sub > Math.abs(middle - nums)) {
+          target = middle;
+          sub = Math.abs(middle - nums)
+        }
+      }
+
+      console.log(target);
+     
