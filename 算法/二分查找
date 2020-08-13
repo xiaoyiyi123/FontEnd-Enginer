@@ -1,0 +1,25 @@
+1.找一个数组中的某个元素
+var arr = [1,2,5,10,20,50,100];
+        var nums = 4;
+        var start = 0;
+        var end = arr.length-1;
+        var middleIndex = Math.floor((start+end)/2);
+        var middle = arr[middleIndex];
+        var index = -1;
+        while(start <= end){
+          if(middle == nums){
+            index = middleIndex;
+            
+            break;
+          }
+          if(middle > nums){
+            end = middleIndex -1;
+            
+          }else{
+            start = middleIndex + 1;
+          }
+          middleIndex = Math.floor((start+end)/2);
+          middle = arr[middleIndex];
+        }
+       
+        console.log(index)
