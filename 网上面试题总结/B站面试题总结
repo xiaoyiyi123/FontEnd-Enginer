@@ -75,6 +75,30 @@ function search(str,t){
 }
 console.log(search(str,'jia'))
 
+
+ //k个一组旋转数组
+ //原始数组arr=[1,2,3,4,5,6,7] k=3
+//结果数组result = [5,6,7,1,2,3,4]
+//实现思路将倒数第k个数组取出，放到原数组的头
+
+      Array.prototype.rotate = function(k){
+        if(k<0 || k === 0 || k === this.length){
+          return this;
+        }
+        if(k>this.length){
+          k = k%this.length;
+        }
+
+        return this.slice(-k).concat(this.slice(0,this.length-k))
+        //取出数组的倒数第k个元素this.slice(-k)
+        //然后和从头开始到取出的元素的前一个元素进行拼接
+      }
+      var arr = [1,2,3,4,5,6,7]
+      console.log(arr.rotate(9))
+
+
+
+
 //讲解
 var obj ={100:'wang'}
 obj[100] == wang
