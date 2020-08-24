@@ -147,6 +147,17 @@ port 端口，http 默认端口是 80，https 默认端口是 443，可以不写
 
 
 
+//求数组的交集
+      nums1 = [1,2,3,4,5]
+      nums2 = [3,4,5,2,6]
+
+      var arr = [];
+      nums1.forEach(element => {
+        return nums2.includes(element)?arr.push(element):null;
+      });
+      console.log(arr)
+
+
 
 
 
