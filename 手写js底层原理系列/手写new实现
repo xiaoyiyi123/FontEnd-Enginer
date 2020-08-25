@@ -60,7 +60,9 @@ function objecFactory(){
 }
 
 
-
+使用：
+var a = objectFactory(Person, 'yandong')
+console.log('执行后的name = ', a.name)
 
 
 
