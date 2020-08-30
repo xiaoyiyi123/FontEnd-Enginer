@@ -43,7 +43,7 @@ function deepClone(origin,target){
   toStr = Object.prototype.toString();
   arrStr = '[object Array]';
   for(var prop in origin){
-    if(origin.hasOwnPrototype(prop)){//Object的hasOwnProperty()方法返回一个布尔值，判断对象是否包含特定的自身（非继承）属性。即该属性是否为原型脸上的属性
+    if(origin.hasOwnProperty(prop)){//Object的hasOwnProperty()方法返回一个布尔值，判断对象是否包含特定的自身（非继承）属性。即该属性是否为原型脸上的属性
       if(origin[prop]!== 'null'&& typeof(origin[prop]) == 'object'){
         if(toStr.call(origin[prop]) == arrStr){
           target[prop] = [];
